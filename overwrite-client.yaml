@@ -174,17 +174,22 @@ dns:
 # ========================================================
 rules:
   # --- P2P 与 内网直连防御 (最高优先级) ---
+  - PROCESS-NAME,tailscaled.exe,DIRECT
+  - PROCESS-NAME,tailscale-ipn.exe,DIRECT
+  - PROCESS-NAME,tailscaled,DIRECT
+  - PROCESS-NAME,zerotier-one_x64,DIRECT
+  - PROCESS-NAME,zerotier-one_x64.exe,DIRECT
+  - IP-CIDR,100.64.0.0/10,DIRECT,no-resolve      # Tailscale / 运营商 CGNAT
+
   - SRC-IP-CIDR,192.168.31.11/32,DIRECT          # NAS 服务器本地 IP 直连
+
   - DOMAIN-SUFFIX,local,DIRECT
   - IP-CIDR,127.0.0.0/8,DIRECT,no-resolve
   - IP-CIDR,192.168.0.0/16,DIRECT,no-resolve
   - IP-CIDR,10.0.0.0/8,DIRECT,no-resolve
   - IP-CIDR,172.16.0.0/12,DIRECT,no-resolve
-  - IP-CIDR,100.64.0.0/10,DIRECT,no-resolve      # Tailscale / 运营商 CGNAT
   - IP-CIDR6,fe80::/10,DIRECT,no-resolve
   - DST-PORT,6881-6889,DIRECT                    # BT 常用端口
-  - PROCESS-NAME,tailscaled,DIRECT
-  - PROCESS-NAME,qbittorrent,DIRECT
   - DOMAIN,pkgs.tailscale.com,🚀 节点选择
   - DOMAIN-SUFFIX,tailscale.com,DIRECT
   - DOMAIN-SUFFIX,ts.net,DIRECT
