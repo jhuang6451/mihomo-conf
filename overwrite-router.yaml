@@ -274,6 +274,11 @@ proxy-groups:
     include-all: true
     filter: '(?i)自建'
 
+  - name:  🏡 二级代理
+    type: select
+    include-all: true
+    filter: '(?i)二级代理'
+
   # --- 3. 地区分组 (组内自动选择最优) ---
   - name: 🇭🇰 香港节点
     type: url-test
