@@ -1,0 +1,361 @@
+# ========================================================
+# 基础运行模式设置
+# ========================================================
+mode: rule
+log-level: info
+allow-lan: true
+mixed-port: 7890
+ipv6: false
+
+# ========================================================
+# 流量嗅探 (Sniffer)
+# ========================================================
+sniffer:
+  enable: true
+  parse-pure-ip: true           # 纯 IP 请求反查域名
+  force-dns-mapping: true       # 强制 Fake-IP 反查
+  override-destination: true    # 替换目标为嗅探到的域名 (强烈建议为 true)
+  force-domain:
+    - '+'
+  sniff:
+    http:
+      ports: [80, 8080-8880]    # 扩宽 HTTP 端口范围
+      override-destination: true
+    tls:
+      ports: [443, 8443]
+    quic:                       # 保留对 HTTP/3 的嗅探
+      ports: [443, 8443]
+
+  # --- 免嗅探白名单 ---
+  skip-domain:
+    - '+.push.apple.com'        # 修复苹果 APNs 推送断连
+  skip-dst-address:
+    # Telegram 官方 ASN 网段 (防止 MTProto 被误判/阻断)
+    - 91.105.192.0/23
+    - 91.108.4.0/22
+    - 91.108.8.0/21
+    - 91.108.16.0/21
+    - 91.108.56.0/22
+    - 95.161.64.0/20
+    - 149.154.160.0/20
+    - 185.76.151.0/24
+    - 2001:67c:4e8::/48
+    - 2001:b28:f23c::/47
+    - 2001:b28:f23f::/48
+    - 2a0a:f280:203::/48
+
+# ========================================================
+# DNS 解析系统 (防泄漏与精准分流)
+# ========================================================
+dns:
+  enable: true
+  listen: 0.0.0.0:1053
+  ipv6: false
+  use-hosts: false
+  use-system-hosts: false
+  enhanced-mode: fake-ip
+  respect-rules: false
+  fake-ip-range: 198.18.0.1/16
+  fake-ip-filter-mode: blacklist
+  fake-ip-filter:
+    # NTP 时间同步
+    - '+.ntp.org.cn'
+    - '+.pool.ntp.org'
+    - 'time.*.com'
+    - 'time.*.gov'
+    - 'time.*.edu.cn'
+    - 'time.windows.com'
+    # 局域网
+    - '+.lan'
+    - '+.local'
+    - '+.localdomain'
+    - '+.example'
+    - '+.invalid'
+    - '+.localhost'
+    - '+.test'
+    - '*.home.arpa'
+    - '*.direct'
+    - '+.arpa'
+    - 'workgroup'
+    # 网络探测与公共 Wi-Fi 认证门户
+    - '+.msftconnecttest.com'
+    - '+.msftncsi.com'
+    - 'detectportal.firefox.com'
+    - 'network-test.debian.org'
+    - 'captive.apple.com'
+    - 'connectivitycheck.gstatic.com'
+    - 'clients3.google.com'
+    - 'nmcheck.gnome.org'
+    - 'httpbin.org'
+    - 'auth.wiwide.com'
+    # 国内运营商与网银“本机一键登录”
+    - '*.cmpassport.com'       # 中国移动
+    - 'open.e.189.cn'          # 中国电信
+    - 'id.mail.wo.cn'          # 中国联通
+    - '*.cmbchina.com'         # 招商银行
+    # P2P 直连 / STUN 服务
+    - 'stun.*.*'
+    - 'stun.*.*.*'
+    - '+.stun.*.*'
+    - '+.stun.*'
+    - '+.ts.net'               # Tailscale
+    - "+.tailscale.com"
+    - "+.tailscale.io"
+    - '+.zerotier.com'         # Zerotier
+    - 'global.turn.twilio.com' # Twilio
+    - 'stun.l.google.com'      # Google STUN
+    - '*.mcdn.bilivideo.cn'    # Bilibili 边缘 P2P 缓冲节点
+    - 'relay.metered.ca'
+    # 智能家居、投屏与局域网发现 (防内网设备失联)
+    - '+.miwifi.com'           # 小米/红米路由器管理
+    - 'router.asus.com'        # 华硕路由器管理
+    - 'tplogin.cn'             # TP-Link 路由器管理
+    - '+.plex.direct'          # Plex 流媒体内网穿透直连
+    - '+.io.mi.com'            # 米家局域网云发现
+    - '+.syncthing.net'        # Syncthing
+    - 'instant.arubanetworks.com' #  Aruba 组网
+    # Steam 下载与内容分发服务器
+    - '+.cm.steampowered.com'
+    - '+.steamcontent.com'
+    - '+.steamserver.net'
+    # 微软服务 (商店/OneDrive等)
+    - '+.onedrive.live.com'
+    - 'xbox.*.microsoft.com'
+    - '+.xboxlive.com'         # Xbox 联机
+    - 'storeedge.microsoft.com'
+    # 苹果服务 (主要为 Apple Music 及部分内容分发)
+    - '+.music.apple.com'
+    - '+.itunes.apple.com'
+    - 'mvod.itunes.apple.com'
+    - '+.aaplimg.com'
+    # 游戏联机
+    - '+.srv.nintendo.net'     # 任天堂 NS 联机
+    - '+.wargaming.net'        # Wargaming 游戏
+    - 'stun.playstation.net'
+    # 镜像站点
+    - '+.mirror.tuna.tsinghua.edu.cn'
+    - '+.mirrors.ustc.edu.cn'
+    - '+.1ms.run'
+    # PT / BT Trackers
+    - "*.*.tracker.*"
+    - "tracker.*"
+    - "*.tracker.*"
+    - "announce.*"
+    - "torrent.*"
+
+  # 默认 DNS (用于解析下方的 DoH 域名)
+  default-nameserver:
+    - 223.5.5.5
+    - 119.29.29.29
+
+  # 兜底 DNS：国外域名走此解析 (使用纯 IP 格式防污染)
+  nameserver:
+    - https://8.8.8.8/dns-query               # Google DoH
+    - https://dns.google/dns-query
+    - https://1.1.1.1/dns-query               # Cloudflare DoH
+    - https://dns.cloudflare.com/dns-query
+    - https://dns.quad9.net/dns-query         # Quad9 DoH
+
+  # 代理节点本身的 DNS 优先走国内直连解析
+  proxy-server-nameserver:
+    - https://223.5.5.5/dns-query
+
+  # 精准 DNS 分流策略 (国内域名及特定大厂走阿里 DoH)
+  nameserver-policy:
+    "geosite:cn,apple,microsoft,steam@cn":
+      - https://223.5.5.5/dns-query
+      - https://223.6.6.6/dns-query
+    "geoip:cn":
+      - https://223.5.5.5/dns-query
+
+# ========================================================
+# 路由分流规则 (综合 geosite、geoip 与域名/IP)
+# ========================================================
+rules:
+  # --- P2P 与 内网直连防御 (最高优先级) ---
+  - SRC-IP-CIDR,192.168.31.11/32,DIRECT          # NAS 服务器本地 IP 直连
+  - DOMAIN-SUFFIX,local,DIRECT
+  - IP-CIDR,127.0.0.0/8,DIRECT,no-resolve
+  - IP-CIDR,192.168.0.0/16,DIRECT,no-resolve
+  - IP-CIDR,10.0.0.0/8,DIRECT,no-resolve
+  - IP-CIDR,172.16.0.0/12,DIRECT,no-resolve
+  - IP-CIDR,100.64.0.0/10,DIRECT,no-resolve      # Tailscale / 运营商 CGNAT
+  - IP-CIDR6,fe80::/10,DIRECT,no-resolve
+  - DST-PORT,6881-6889,DIRECT                    # BT 常用端口
+  - PROCESS-NAME,tailscaled,DIRECT
+  - PROCESS-NAME,qbittorrent,DIRECT
+
+  # --- 拦截目标端口为 443 的 UDP 流量 ---
+  - AND,((NETWORK,UDP),(DST-PORT,443)),REJECT
+
+  # --- 屏蔽广告与跟踪 ---
+  - GEOSITE,category-ads-all,REJECT
+
+  # --- AI 服务规则 ---
+  - GEOSITE,category-ai-chat-!cn,🏗️ 自建 自动 # 将海外 AI 服务定向到自建节点
+  - GEOSITE,category-ai-cn,DIRECT # 国内 AI 服务走直连
+
+  # --- 常用流量直连规则 ---
+  - GEOSITE,steam@cn,DIRECT                      # Steam 中国区及下载直连
+  - GEOSITE,apple@cn,DIRECT                      # Apple 国内直连
+  - GEOSITE,microsoft@cn,DIRECT                  # 微软 国内直连
+  - GEOSITE,apple,DIRECT                         # Apple 全局偏好直连
+  - GEOSITE,category-games@cn,DIRECT             # 国内游戏直连
+
+  # --- 需代理的服务 ---
+  - GEOSITE,steam,🚀 节点选择                    # Steam 社区与商店
+  - GEOSITE,telegram,🚀 节点选择
+  - GEOSITE,google,🚀 节点选择
+  - GEOSITE,github,🚀 节点选择
+  - GEOSITE,geolocation-!cn,🚀 节点选择          # 非中国区域名兜底走代理
+  - GEOIP,telegram,🚀 节点选择                   # 拦截 Telegram IP
+
+  # --- 国内直连规则 ---
+  - GEOSITE,cn,DIRECT
+  - GEOIP,CN,DIRECT                              # 国内 IP 兜底直连
+
+  # --- 全局兜底 ---
+  - MATCH,🚀 节点选择
+
+# ========================================================
+# 节点组策略 (自动正则匹配)
+# 适用命名规则: 来源 国家/地区 编号 (例如: 追云加速 美国 01 / 自建 台湾 02)
+# ========================================================
+proxy-groups:
+  # --- 1. 核心路由入口 ---
+  - name: 🚀 节点选择
+    type: select
+    proxies:
+      - ♻️ 自动匹配
+      - ✈️ 追云加速 手动
+      - ✈️ 追云加速 自动
+      - 🏗️ 自建 手动
+      - 🏗️ 自建 自动
+      - 🇭🇰 香港节点
+      - 🇹🇼 台湾节点
+      - 🇯🇵 日本节点
+      - 🇺🇸 美国节点
+      - 🇸🇬 新加坡节点
+      - DIRECT
+
+  # 全局延迟最低节点
+  - name: ♻️ 自动匹配
+    type: url-test
+    url: http://www.gstatic.com/generate_204
+    interval: 300
+    tolerance: 50
+    include-all: true
+
+  # --- 2. 来源分组 (此处以 "追云加速" 和 "自建" 举例，请根据实际名称修改 filter) ---
+  - name: ✈️ 追云加速 自动
+    type: url-test
+    url: http://www.gstatic.com/generate_204
+    interval: 300
+    tolerance: 50
+    include-all: true
+    filter: '(?i)追云加速'
+
+  - name: ✈️ 追云加速 手动
+    type: select
+    include-all: true
+    filter: '(?i)追云加速'
+
+  - name: 🏗️ 自建 自动
+    type: url-test
+    url: http://www.gstatic.com/generate_204
+    interval: 300
+    tolerance: 50
+    include-all: true
+    filter: '(?i)自建'
+
+  - name: 🏗️ 自建 手动
+    type: select
+    include-all: true
+    filter: '(?i)自建'
+
+  # --- 3. 地区分组 (组内自动选择最优) ---
+  - name: 🇭🇰 香港节点
+    type: url-test
+    url: http://www.gstatic.com/generate_204
+    interval: 300
+    tolerance: 50
+    include-all: true
+    filter: '(?i)香港|HK|Hong Kong'
+
+  - name: 🇹🇼 台湾节点
+    type: url-test
+    url: http://www.gstatic.com/generate_204
+    interval: 300
+    tolerance: 50
+    include-all: true
+    filter: '(?i)台湾|TW|Taiwan'
+
+  - name: 🇯🇵 日本节点
+    type: url-test
+    url: http://www.gstatic.com/generate_204
+    interval: 300
+    tolerance: 50
+    include-all: true
+    filter: '(?i)日本|JP|Japan'
+
+  - name: 🇺🇸 美国节点
+    type: url-test
+    url: http://www.gstatic.com/generate_204
+    interval: 300
+    tolerance: 50
+    include-all: true
+    filter: '(?i)美国|US|United States'
+
+  - name: 🇸🇬 新加坡节点
+    type: url-test
+    url: http://www.gstatic.com/generate_204
+    interval: 300
+    tolerance: 50
+    include-all: true
+    filter: '(?i)新加坡|SG|Singapore'
+
+# ========================================================
+# 网络栈与连接调优
+# ========================================================
+unified-delay: true         # 显示真实端到端延迟
+tcp-concurrent: true        # 开启 TCP 并发，提升网页加载速度
+find-process-mode: always   # 强制获取进程名，确保 PROCESS-NAME 规则 100% 生效
+
+# ========================================================
+# TUN 模式设置
+# ========================================================
+tun:
+  enable: true
+  stack: system             # 推荐 system 栈，性能最好 (如遇兼容问题可改回 mixed)
+  device: Mihomo
+  auto-route: true          # 自动配置系统路由
+  auto-detect-interface: true
+  auto-redirect: false
+  dns-hijack:
+    - any:53                # 劫持所有局域网和本机的原生 53 端口 DNS 请求
+  mtu: 9000                 # 提升虚拟网卡 MTU 至 9000，降低 CPU 占用并提升极限网速 (原为 1500)
+  route-exclude-address: []
+
+# ========================================================
+# 局域网共享控制 (需配合顶层 allow-lan: true)
+# ========================================================
+lan-allowed-ips:
+  - 0.0.0.0/0               # 允许所有局域网 IPv4 设备连接
+  - ::/0                    # 允许所有局域网 IPv6 设备连接
+lan-disallowed-ips: []
+
+# ========================================================
+# 状态持久化与数据库更新
+# ========================================================
+profile:
+  store-selected: true      # 记忆节点选择状态
+  store-fake-ip: true       # 记忆 Fake-IP 映射表，防重启断网
+
+geo-auto-update: true       # 开启自动更新 (原为 false)
+geo-update-interval: 24     # 每 24 小时更新一次
+geodata-mode: true          # 启用高效的 dat 模式 (原为 false)
+geox-url:
+  geoip: "https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geoip-lite.dat"
+  geosite: "https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geosite.dat"
+  mmdb: "https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geoip.metadb"
+  asn: "https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/GeoLite2-ASN.mmdb"
