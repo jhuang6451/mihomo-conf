@@ -332,9 +332,6 @@ tun:
   auto-detect-interface: false
   auto-redirect: false
   strict-route: false
-  route-exclude-address:
-    - 100.64.0.0/10
-    - fd7a:115c:a1e0::/48
 
 # ========================================================
 # 状态持久化
