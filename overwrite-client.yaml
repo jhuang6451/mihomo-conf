@@ -184,6 +184,9 @@ rules:
   - DST-PORT,6881-6889,DIRECT                    # BT 常用端口
   - PROCESS-NAME,tailscaled,DIRECT
   - PROCESS-NAME,qbittorrent,DIRECT
+  - DOMAIN,pkgs.tailscale.com,🚀 节点选择
+  - DOMAIN-SUFFIX,tailscale.com,DIRECT
+  - DOMAIN-SUFFIX,ts.net,DIRECT
 
   # --- 拦截目标端口为 443 的 UDP 流量 ---
   - AND,((NETWORK,UDP),(DST-PORT,443)),REJECT
@@ -334,7 +337,9 @@ tun:
   dns-hijack:
     - any:53                # 劫持所有局域网和本机的原生 53 端口 DNS 请求
   mtu: 9000                 # 提升虚拟网卡 MTU 至 9000，降低 CPU 占用并提升极限网速 (原为 1500)
-  route-exclude-address: []
+  route-exclude-address:
+    - 100.64.0.0/10
+    - fd7a:115c:a1e0::/48
 
 # ========================================================
 # 局域网共享控制 (需配合顶层 allow-lan: true)

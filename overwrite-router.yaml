@@ -182,6 +182,9 @@ rules:
   - IP-CIDR,100.64.0.0/10,DIRECT,no-resolve      # Tailscale / 运营商 CGNAT
   - IP-CIDR6,fe80::/10,DIRECT,no-resolve
   - DST-PORT,6881-6889,DIRECT                    # BT 常用端口
+  - DOMAIN,pkgs.tailscale.com,🚀 节点选择
+  - DOMAIN-SUFFIX,tailscale.com,DIRECT
+  - DOMAIN-SUFFIX,ts.net,DIRECT
 
   # --- 拦截目标端口为 443 的 UDP 流量 ---
   - AND,((NETWORK,UDP),(DST-PORT,443)),REJECT
@@ -329,6 +332,9 @@ tun:
   auto-detect-interface: false
   auto-redirect: false
   strict-route: false
+  route-exclude-address:
+    - 100.64.0.0/10
+    - fd7a:115c:a1e0::/48
 
 # ========================================================
 # 状态持久化
