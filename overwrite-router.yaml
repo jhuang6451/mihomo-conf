@@ -193,7 +193,7 @@ rules:
   - GEOSITE,category-ads-all,REJECT
 
   # --- AI 服务规则 ---
-  - GEOSITE,category-ai-chat-!cn,🏗️ 自建 自动 # 将海外 AI 服务定向到自建节点
+  - GEOSITE,category-ai-chat-!cn,🏗️ 自建 URLTest # 将海外 AI 服务定向到自建节点
   - GEOSITE,category-ai-cn,DIRECT # 国内 AI 服务走直连
 
   # --- 常用流量直连规则 ---
