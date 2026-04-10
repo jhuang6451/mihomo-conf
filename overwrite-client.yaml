@@ -5,7 +5,7 @@ mode: rule
 log-level: info
 allow-lan: true
 mixed-port: 7890
-ipv6: false
+ipv6: true
 
 # ========================================================
 # 流量嗅探 (Sniffer)
