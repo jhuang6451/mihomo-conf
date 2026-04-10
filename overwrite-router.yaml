@@ -167,6 +167,7 @@ dns:
       - https://223.6.6.6/dns-query
     "geoip:cn":
       - https://223.5.5.5/dns-query
+        "+.ts.net": "100.100.100.100"              # 针对 Tailscale MagicDNS 功能的 DNS 预分流的核心配置
 
 # ========================================================
 # 路由分流规则 (综合 geosite、geoip 与域名/IP)
@@ -337,6 +338,9 @@ tun:
   auto-detect-interface: false
   auto-redirect: false
   strict-route: false
+  route-exclude-address:
+    - 100.64.0.0/10         # Tailscale 确保访问私有 IP 的数据包走 Tailscale 隧道
+    - fd7a:115c:a1e0::/48
 
 # ========================================================
 # 状态持久化
