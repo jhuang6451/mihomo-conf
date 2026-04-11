@@ -142,6 +142,9 @@ dns:
     - "*.tracker.*"
     - "announce.*"
     - "torrent.*"
+    # 自建站点
+    - '+.elix1r.top'
+    - '+.acc3l.top'
 
   # 默认 DNS (用于解析下方的 DoH 域名)
   default-nameserver:
@@ -162,10 +165,16 @@ dns:
 
   # 精准 DNS 分流策略 (国内域名及特定大厂走阿里 DoH)
   nameserver-policy:
+    "+.ts.net": "100.100.100.100"              # 针对 Tailscale MagicDNS 功能的 DNS 预分流的核心配置
     "geosite:cn,apple,microsoft,steam@cn":
       - https://223.5.5.5/dns-query
       - https://223.6.6.6/dns-query
-    "+.ts.net": "100.100.100.100"              # 针对 Tailscale MagicDNS 功能的 DNS 预分流的核心配置
+    +.elix1r.top,+.acc3l.top:                  # 自建域名
+      - https://223.5.5.5/dns-query
+      - https://223.6.6.6/dns-query
+    "geosite:geolocation-!cn":
+      - https://8.8.8.8/dns-query
+      - https://1.1.1.1/dns-query
 
 # ========================================================
 # 路由分流规则 (综合 geosite、geoip 与域名/IP)
@@ -223,8 +232,8 @@ rules:
   - DOMAIN-SUFFIX,oauth2.googleapis.com,🏗️ 自建 URLTest
 
   # --- 其他自定义域名/IP 定向 ---
-  - DOMAIN-SUFFIX,elix1r.top,DIRECT
-  - DOMAIN-SUFFIX,acc3l.top,DIRECT
+  - DOMAIN-SUFFIX,elix1r.top,DIRECT              # 自建站点
+  - DOMAIN-SUFFIX,acc3l.top,DIRECT               # 自建站点
 
   # --- 常用流量直连规则 ---
   - GEOSITE,steam@cn,DIRECT                      # Steam 中国区及下载直连
