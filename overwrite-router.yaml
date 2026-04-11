@@ -204,23 +204,23 @@ rules:
   - GEOSITE,category-ai-cn,DIRECT # 国内 AI 服务走直连
 
   # --- Google 服务分流 ---
-  - "DOMAIN-SUFFIX,accounts.google.com,🏗️ 自建 URLTest",
-  - "DOMAIN-SUFFIX,gemini.google.com,🏗️ 自建 URLTest",
-  - "DOMAIN-SUFFIX,play.google.com,🏗️ 自建 URLTest",
-  - "DOMAIN-SUFFIX,aistudio.google.com,🏗️ 自建 URLTest",
-  - "DOMAIN-SUFFIX,makersuite.google.com,🏗️ 自建 URLTest",
-  - "DOMAIN-SUFFIX,mtalk.google.com,🏗️ 自建 URLTest",
-  - "DOMAIN-SUFFIX,ai.google.dev,🏗️ 自建 URLTest",
-  - "DOMAIN-SUFFIX,clients.google.com,🏗️ 自建 URLTest",
-  - "DOMAIN-SUFFIX,clients4.google.com,🏗️ 自建 URLTest",
-  - "DOMAIN-SUFFIX,clients6.google.com,🏗️ 自建 URLTest",
+  - DOMAIN-SUFFIX,accounts.google.com,🏗️ 自建 URLTest
+  - DOMAIN-SUFFIX,gemini.google.com,🏗️ 自建 URLTest
+  - DOMAIN-SUFFIX,play.google.com,🏗️ 自建 URLTest
+  - DOMAIN-SUFFIX,aistudio.google.com,🏗️ 自建 URLTest
+  - DOMAIN-SUFFIX,makersuite.google.com,🏗️ 自建 URLTest
+  - DOMAIN-SUFFIX,mtalk.google.com,🏗️ 自建 URLTest
+  - DOMAIN-SUFFIX,ai.google.dev,🏗️ 自建 URLTest
+  - DOMAIN-SUFFIX,clients.google.com,🏗️ 自建 URLTest
+  - DOMAIN-SUFFIX,clients4.google.com,🏗️ 自建 URLTest
+  - DOMAIN-SUFFIX,clients6.google.com,🏗️ 自建 URLTest
 
-  - "DOMAIN-SUFFIX,generativelanguage.googleapis.com,🏗️ 自建 URLTest",
-  - "DOMAIN-SUFFIX,geller-pa.googleapis.com,🏗️ 自建 URLTest",
-  - "DOMAIN-SUFFIX,cloudcode-pa.googleapis.com,🏗️ 自建 URLTest",
-  - "DOMAIN-SUFFIX,play.googleapis.com,🏗️ 自建 URLTest",
-  - "DOMAIN-SUFFIX,clientservices.googleapis.com,🏗️ 自建 URLTest",
-  - "DOMAIN-SUFFIX,oauth2.googleapis.com,🏗️ 自建 URLTest",
+  - DOMAIN-SUFFIX,generativelanguage.googleapis.com,🏗️ 自建 URLTest
+  - DOMAIN-SUFFIX,geller-pa.googleapis.com,🏗️ 自建 URLTest
+  - DOMAIN-SUFFIX,cloudcode-pa.googleapis.com,🏗️ 自建 URLTest
+  - DOMAIN-SUFFIX,play.googleapis.com,🏗️ 自建 URLTest
+  - DOMAIN-SUFFIX,clientservices.googleapis.com,🏗️ 自建 URLTest
+  - DOMAIN-SUFFIX,oauth2.googleapis.com,🏗️ 自建 URLTest
 
   # --- 其他自定义域名/IP 定向 ---
   - DOMAIN-SUFFIX,elix1r.top,DIRECT
