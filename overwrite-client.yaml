@@ -29,6 +29,10 @@ sniffer:
   # --- 免嗅探白名单 ---
   skip-domain:
     - '+.push.apple.com'        # 修复苹果 APNs 推送断连
+    - dlg.io.mi.com
+    - +.oray.com
+    - +.sunlogin.net
+    - +.push.apple.com
   skip-dst-address:
     # Telegram 官方 ASN 网段 (防止 MTProto 被误判/阻断)
     - 91.105.192.0/23

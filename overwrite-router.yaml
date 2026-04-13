@@ -4,53 +4,55 @@
 mode: rule
 log-level: info
 allow-lan: true
-mixed-port: 7890
-ipv6: true
 
 # ========================================================
-# 流量嗅探 (Sniffer)
+# 流量嗅探 (Sniffer) 由 Openclash 配置接管
 # ========================================================
-sniffer:
-  enable: true
-  parse-pure-ip: true           # 纯 IP 请求反查域名
-  force-dns-mapping: true       # 强制 Fake-IP 反查
-  override-destination: true    # 替换目标为嗅探到的域名 (强烈建议为 true)
-  force-domain:
-    - '+'
-  sniff:
-    http:
-      ports: [80, 8080-8880]    # 扩宽 HTTP 端口范围
-      override-destination: true
-    tls:
-      ports: [443, 8443]
-    quic:                       # 保留对 HTTP/3 的嗅探
-      ports: [443, 8443]
+# sniffer:
+#   enable: true
+#   parse-pure-ip: true           # 纯 IP 请求反查域名
+#   force-dns-mapping: true       # 强制 Fake-IP 反查
+#   override-destination: true    # 替换目标为嗅探到的域名 (强烈建议为 true)
+#   force-domain:
+#     - '+'
+#   sniff:
+#     http:
+#       ports: [80, 8080-8880]    # 扩宽 HTTP 端口范围
+#       override-destination: true
+#     tls:
+#       ports: [443, 8443]
+#     quic:                       # 保留对 HTTP/3 的嗅探
+#       ports: [443, 8443]
 
-  # --- 免嗅探白名单 ---
-  skip-domain:
-    - '+.push.apple.com'        # 修复苹果 APNs 推送断连
-  skip-dst-address:
-    # Telegram 官方 ASN 网段 (防止 MTProto 被误判/阻断)
-    - 91.105.192.0/23
-    - 91.108.4.0/22
-    - 91.108.8.0/21
-    - 91.108.16.0/21
-    - 91.108.56.0/22
-    - 95.161.64.0/20
-    - 149.154.160.0/20
-    - 185.76.151.0/24
-    - 2001:67c:4e8::/48
-    - 2001:b28:f23c::/47
-    - 2001:b28:f23f::/48
-    - 2a0a:f280:203::/48
+#   # --- 免嗅探白名单 ---
+#   skip-domain:
+#     - '+.push.apple.com'        # 修复苹果 APNs 推送断连
+#     - dlg.io.mi.com
+#     - +.oray.com
+#     - +.sunlogin.net
+#     - +.push.apple.com
+#   skip-dst-address:
+#     # Telegram 官方 ASN 网段 (防止 MTProto 被误判/阻断)
+#     - 91.105.192.0/23
+#     - 91.108.4.0/22
+#     - 91.108.8.0/21
+#     - 91.108.16.0/21
+#     - 91.108.56.0/22
+#     - 95.161.64.0/20
+#     - 149.154.160.0/20
+#     - 185.76.151.0/24
+#     - 2001:67c:4e8::/48
+#     - 2001:b28:f23c::/47
+#     - 2001:b28:f23f::/48
+#     - 2a0a:f280:203::/48
 
 # ========================================================
 # DNS 解析系统 (防泄漏与精准分流)
 # ========================================================
 dns:
   enable: true
-  listen: 0.0.0.0:1053
-  ipv6: false
+  listen: 0.0.0.0:7874
+  ipv6: true
   use-hosts: false
   use-system-hosts: false
   enhanced-mode: fake-ip
@@ -385,9 +387,6 @@ tun:
   auto-detect-interface: false
   auto-redirect: false
   strict-route: false
-  route-exclude-address:
-    - 100.64.0.0/10         # Tailscale 确保访问私有 IP 的数据包走 Tailscale 隧道
-    - fd7a:115c:a1e0::/48
 
 # ========================================================
 # 状态持久化
