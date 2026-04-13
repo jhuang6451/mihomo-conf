@@ -1,12 +1,12 @@
 # ========================================================
-# 基础运行模式设置
+# 基础运行模式设置 - 由 Openclash 配置接管
 # ========================================================
-mode: rule
-log-level: info
-allow-lan: true
+# mode: rule
+# log-level: info
+# allow-lan: true
 
 # ========================================================
-# 流量嗅探 (Sniffer) 由 Openclash 配置接管
+# 流量嗅探 (Sniffer) - 由 Openclash 配置接管
 # ========================================================
 # sniffer:
 #   enable: true
@@ -47,18 +47,18 @@ allow-lan: true
 #     - 2a0a:f280:203::/48
 
 # ========================================================
-# DNS 解析系统 (防泄漏与精准分流)
+# DNS 解析系统 -部分由 Openclash 配置接管
 # ========================================================
 dns:
-  enable: true
-  listen: 0.0.0.0:7874
-  ipv6: true
-  use-hosts: false
-  use-system-hosts: false
-  enhanced-mode: fake-ip
-  respect-rules: false
-  fake-ip-range: 198.18.0.1/16
-  fake-ip-filter-mode: blacklist
+  # enable: true
+  # listen: 0.0.0.0:7874
+  # ipv6: true
+  # use-hosts: false
+  # use-system-hosts: false
+  # enhanced-mode: fake-ip
+  # respect-rules: false
+  # fake-ip-range: 198.18.0.1/16
+  # fake-ip-filter-mode: blacklist
   fake-ip-filter:
     # NTP 时间同步
     - '+.ntp.org.cn'
@@ -371,22 +371,22 @@ proxy-groups:
     filter: '(?i)新加坡|SG|Singapore'
 
 # ========================================================
-# 网络栈与连接调优
+# 网络栈与连接调优 - 由 Openclash 配置接管
 # ========================================================
-unified-delay: true         # 显示真实端到端延迟
-tcp-concurrent: true        # 开启 TCP 并发，提升网页加载速度
+# unified-delay: true         # 显示真实端到端延迟
+# tcp-concurrent: true        # 开启 TCP 并发，提升网页加载速度
 
 # ========================================================
-# TUN 模式设置
+# TUN 模式设置 - 由 Openclash 配置接管
 # ========================================================
-tun:
-  enable: true
-  stack: system
-  device: utun
-  auto-route: false
-  auto-detect-interface: false
-  auto-redirect: false
-  strict-route: false
+# tun:
+#   enable: true
+#   stack: system
+#   device: utun
+#   auto-route: false
+#   auto-detect-interface: false
+#   auto-redirect: false
+#   strict-route: false
 
 # ========================================================
 # 状态持久化
