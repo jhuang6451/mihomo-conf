@@ -171,7 +171,7 @@ dns:
     "geosite:cn,apple,microsoft,steam@cn":
       - https://223.5.5.5/dns-query
       - https://223.6.6.6/dns-query
-    +.elix1r.top,+.acc3l.top:                  # 自建域名
+    +.elix1r.top,+.acc3l.top,+.tailscale.com:                  # 自建域名
       - https://223.5.5.5/dns-query
       - https://223.6.6.6/dns-query
     "geosite:geolocation-!cn":

@@ -173,7 +173,7 @@ dns:
     "geosite:cn,apple,microsoft,steam@cn":
       - https://223.5.5.5/dns-query
       - https://223.6.6.6/dns-query
-    +.elix1r.top,+.acc3l.top:                  # 自建域名
+    +.elix1r.top,+.acc3l.top,+.tailscale.com:                  # 自建域名
       - https://223.5.5.5/dns-query
       - https://223.6.6.6/dns-query
     "geosite:geolocation-!cn":
@@ -381,6 +381,8 @@ find-process-mode: always   # 强制获取进程名，确保 PROCESS-NAME 规则
 
 # ========================================================
 # TUN 模式设置
+# ⚠️ Clash Party 客户端中开启 Tun 模式会覆盖此配置项
+# ⚠️ 需要在客户端内 Tun 设置中对配置进行手动调整!!!
 # ========================================================
 tun:
   enable: true
