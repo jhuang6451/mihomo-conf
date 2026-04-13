@@ -218,6 +218,7 @@ rules:
   - DOMAIN,skyapi.live.net,DIRECT
   - DOMAIN,storage.live.com,DIRECT
   - DOMAIN-SUFFIX,sharepoint.com,DIRECT
+  - DOMAIN,mobile.events.data.microsoft.com,DIRECT
 
   # --- Google 服务自定义分流 ---
   - DOMAIN-SUFFIX,accounts.google.com,🏗️ 自建 URLTest
