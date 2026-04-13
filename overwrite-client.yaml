@@ -212,7 +212,14 @@ rules:
   - GEOSITE,category-ai-chat-!cn,🏗️ 自建 URLTest # 将海外 AI 服务定向到自建节点
   - GEOSITE,category-ai-cn,DIRECT # 国内 AI 服务走直连
 
-  # --- Google 服务分流 ---
+  # --- 微软服务自定义分流 ---
+  - DOMAIN,my.microsoftpersonalcontent.com,DIRECT
+  - DOMAIN-SUFFIX,onedrive.com,DIRECT
+  - DOMAIN,skyapi.live.net,DIRECT
+  - DOMAIN,storage.live.com,DIRECT
+  - DOMAIN-SUFFIX,sharepoint.com,DIRECT
+  
+  # --- Google 服务自定义分流 ---
   - DOMAIN-SUFFIX,accounts.google.com,🏗️ 自建 URLTest
   - DOMAIN-SUFFIX,gemini.google.com,🏗️ 自建 URLTest
   - DOMAIN-SUFFIX,play.google.com,🏗️ 自建 URLTest
