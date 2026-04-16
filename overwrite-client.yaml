@@ -223,25 +223,33 @@ rules:
   - DOMAIN,storage.live.com,DIRECT
   - DOMAIN-SUFFIX,sharepoint.com,DIRECT
   - DOMAIN,mobile.events.data.microsoft.com,DIRECT
+  - DOMAIN,store-images.s-microsoft.com,DIRECT
 
   # --- Google 服务自定义分流 ---
-  - DOMAIN-SUFFIX,accounts.google.com,🏗️ 自建 URLTest
-  - DOMAIN-SUFFIX,gemini.google.com,🏗️ 自建 URLTest
-  - DOMAIN-SUFFIX,play.google.com,🏗️ 自建 URLTest
-  - DOMAIN-SUFFIX,aistudio.google.com,🏗️ 自建 URLTest
-  - DOMAIN-SUFFIX,makersuite.google.com,🏗️ 自建 URLTest
-  - DOMAIN-SUFFIX,mtalk.google.com,🏗️ 自建 URLTest
-  - DOMAIN-SUFFIX,ai.google.dev,🏗️ 自建 URLTest
-  - DOMAIN-SUFFIX,clients.google.com,🏗️ 自建 URLTest
-  - DOMAIN-SUFFIX,clients4.google.com,🏗️ 自建 URLTest
-  - DOMAIN-SUFFIX,clients6.google.com,🏗️ 自建 URLTest
+  - DOMAIN-SUFFIX,accounts.google.com,🤖 AI 服务
+  - DOMAIN-SUFFIX,gemini.google.com,🤖 AI 服务
+  - DOMAIN-SUFFIX,play.google.com,🤖 AI 服务
+  - DOMAIN-SUFFIX,aistudio.google.com,🤖 AI 服务
+  - DOMAIN-SUFFIX,makersuite.google.com,🤖 AI 服务
+  - DOMAIN-SUFFIX,mtalk.google.com,🤖 AI 服务
+  - DOMAIN-SUFFIX,ai.google.dev,🤖 AI 服务
+  - DOMAIN-SUFFIX,clients.google.com,🤖 AI 服务
+  - DOMAIN-SUFFIX,clients4.google.com,🤖 AI 服务
+  - DOMAIN-SUFFIX,clients6.google.com,🤖 AI 服务
 
-  - DOMAIN-SUFFIX,generativelanguage.googleapis.com,🏗️ 自建 URLTest
-  - DOMAIN-SUFFIX,geller-pa.googleapis.com,🏗️ 自建 URLTest
-  - DOMAIN-SUFFIX,cloudcode-pa.googleapis.com,🏗️ 自建 URLTest
-  - DOMAIN-SUFFIX,play.googleapis.com,🏗️ 自建 URLTest
-  - DOMAIN-SUFFIX,clientservices.googleapis.com,🏗️ 自建 URLTest
-  - DOMAIN-SUFFIX,oauth2.googleapis.com,🏗️ 自建 URLTest
+  - DOMAIN-SUFFIX,generativelanguage.googleapis.com,🤖 AI 服务
+  - DOMAIN-SUFFIX,geller-pa.googleapis.com,🤖 AI 服务
+  - DOMAIN-SUFFIX,cloudcode-pa.googleapis.com,🤖 AI 服务
+  - DOMAIN-SUFFIX,play.googleapis.com,🤖 AI 服务
+  - DOMAIN-SUFFIX,clientservices.googleapis.com,🤖 AI 服务
+  - DOMAIN-SUFFIX,oauth2.googleapis.com,🤖 AI 服务
+
+  # --- 镜像站自定义分流 ---
+  - DOMAIN-SUFFIX,tuna.tsinghua.edu.cn,DIRECT
+  - DOMAIN-SUFFIX,ustc.edu.cn,DIRECT
+  - DOMAIN-SUFFIX,1ms.run,DIRECT
+  - DOMAIN-SUFFIX,mirrors.aliyun.com,DIRECT
+  - DOMAIN,registry.npmjs.org,DIRECT             # NPM 官方注册表
 
   # --- 其他自定义域名/IP 定向 ---
   - DOMAIN-SUFFIX,elix1r.top,DIRECT              # 自建站点
@@ -330,6 +338,22 @@ proxy-groups:
     type: select
     include-all: true
     filter: '(?i)二级代理'
+
+  - name: 🤖 AI 服务
+    type: select
+    proxies:
+      - ♻️ 自动匹配 URLTest
+      - ✈️ 追云加速
+      - ✈️ 追云加速 URLTest
+      - 🏗️ 自建
+      - 🏗️ 自建 URLTest
+      - 🏡 二级代理
+      - 🇭🇰 香港节点
+      - 🇹🇼 台湾节点
+      - 🇯🇵 日本节点
+      - 🇺🇸 美国节点
+      - 🇸🇬 新加坡节点
+      - DIRECT
 
   # --- 3. 地区分组 (组内自动选择最优) ---
   - name: 🇭🇰 香港节点
