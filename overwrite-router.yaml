@@ -241,6 +241,15 @@ rules:
   - DOMAIN-SUFFIX,play.googleapis.com,🤖 AI 服务
   - DOMAIN-SUFFIX,clientservices.googleapis.com,🤖 AI 服务
   - DOMAIN-SUFFIX,oauth2.googleapis.com,🤖 AI 服务
+  - DOMAIN-SUFFIX,www.googleapis.com,🤖 AI 服务
+
+  - DOMAIN,lh3.googleusercontent.com,🤖 AI 服务
+  - DOMAIN,antigravity-unleash.goog,🤖 AI 服务
+
+  # --- IP 解析站分流 ---
+  - DOMAIN-SUFFIX,whoer.net,🤖 AI 服务
+  - DOMAIN-SUFFIX,browserscan.net,🤖 AI 服务
+  - DOMAIN-SUFFIX,scamalytics.com,🤖 AI 服务
 
   # --- 镜像站自定义分流 ---
   - DOMAIN-SUFFIX,tuna.tsinghua.edu.cn,DIRECT
