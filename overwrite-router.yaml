@@ -346,6 +346,22 @@ proxy-groups:
     include-all: true
     filter: '(?i)二级代理'
 
+  - name: 🤖 AI 服务
+    type: select
+    proxies:
+      - ♻️ 自动匹配 URLTest
+      - ✈️ 追云加速
+      - ✈️ 追云加速 URLTest
+      - 🏗️ 自建
+      - 🏗️ 自建 URLTest
+      - 🏡 二级代理
+      - 🇭🇰 香港节点
+      - 🇹🇼 台湾节点
+      - 🇯🇵 日本节点
+      - 🇺🇸 美国节点
+      - 🇸🇬 新加坡节点
+      - DIRECT
+
   # --- 3. 地区分组 (组内自动选择最优) ---
   - name: 🇭🇰 香港节点
     type: url-test
