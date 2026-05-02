@@ -144,6 +144,8 @@ dns:
     - "*.tracker.*"
     - "announce.*"
     - "torrent.*"
+    - "+.lemonhd.net"
+    - "+.btschool.club"
     # 自建站点
     - '+.elix1r.top'
     - '+.acc3l.top'
@@ -209,6 +211,10 @@ rules:
 
   # --- 屏蔽广告与跟踪 ---
   - GEOSITE,category-ads-all,REJECT
+
+  # --- PT 站点直连 ---
+  - DOMAIN-KEYWORD,btschool,DIRECT
+  - DOMAIN-SUFFIX,lemonhd.net,DIRECT
 
   # --- AI 服务规则 ---
   - GEOSITE,category-ai-chat-!cn,🤖 AI 服务 # 将海外 AI 服务定向到自建节点
