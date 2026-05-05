@@ -220,6 +220,9 @@ rules:
   - DOMAIN-KEYWORD,btschool,DIRECT
   - DOMAIN-SUFFIX,lemonhd.net,DIRECT
 
+  # --- v.ps 控制台直连 ---
+  - DOMAIN,vps.hosting,DIRECT
+
   # --- AI 服务规则 ---
   - GEOSITE,category-ai-chat-!cn,🤖 AI 服务 # 将海外 AI 服务定向到自建节点
   - GEOSITE,category-ai-cn,DIRECT # 国内 AI 服务走直连
