@@ -149,6 +149,8 @@ dns:
     # 自建站点
     - '+.elix1r.top'
     - '+.acc3l.top'
+    # CF DNS
+    - '+.ns.cloudflare.com'
 
   # 默认 DNS (用于解析下方的 DoH 域名)
   default-nameserver:
