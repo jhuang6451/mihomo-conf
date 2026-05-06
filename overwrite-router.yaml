@@ -301,13 +301,11 @@ proxy-groups:
   - name: 🚀 节点选择
     type: select
     proxies:
-      - 📍 所有节点
       - ♻️ 自动匹配 URLTest
+      - 📍 所有节点
       - 🏗️ 自建
       - 🏗️ 自建 URLTest
       - 🏡 二级代理
-      - ✈️ 追云加速
-      - ✈️ 追云加速 URLTest
       - 🇭🇰 香港节点
       - 🇹🇼 台湾节点
       - 🇯🇵 日本节点
@@ -316,7 +314,6 @@ proxy-groups:
       - 🇩🇪 德国节点
       - DIRECT
 
-  # 所有节点
   - name: 📍 所有节点
     type: select
     include-all: true
@@ -331,19 +328,6 @@ proxy-groups:
     include-all: true
 
   # --- 2. 来源分组 (此处以 "追云加速" 和 "自建" 举例，请根据实际名称修改 filter) ---
-  - name: ✈️ 追云加速 URLTest
-    type: url-test
-    url: http://www.gstatic.com/generate_204
-    interval: 300
-    tolerance: 50
-    include-all: true
-    filter: '(?i)追云加速'
-
-  - name: ✈️ 追云加速
-    type: select
-    include-all: true
-    filter: '(?i)追云加速'
-
   - name: 🏗️ 自建 URLTest
     type: url-test
     url: http://www.gstatic.com/generate_204
@@ -366,11 +350,10 @@ proxy-groups:
     type: select
     proxies:
       - ♻️ 自动匹配 URLTest
+      - 📍 所有节点
       - 🏗️ 自建
       - 🏗️ 自建 URLTest
       - 🏡 二级代理
-      - ✈️ 追云加速
-      - ✈️ 追云加速 URLTest
       - 🇭🇰 香港节点
       - 🇹🇼 台湾节点
       - 🇯🇵 日本节点
