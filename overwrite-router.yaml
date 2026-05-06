@@ -320,7 +320,7 @@ proxy-groups:
   - name: 📍 所有节点
     type: select
     include-all: true
-    filter: "(?i).*"
+    filter: '(?i).*'
 
   # 全局延迟最低节点
   - name: ♻️ 自动匹配 URLTest
