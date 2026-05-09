@@ -324,7 +324,7 @@ proxy-groups:
       - 📍 所有节点
       - ♻️ 自动匹配 URLTest
       - 🚆 GCP
-      - ♿ CN 优化
+      - 🚀 CN 优化
       - 🏗️ 自建
       - 🏡 二级代理
       - ✈️ 机场
@@ -347,7 +347,7 @@ proxy-groups:
     proxies:
       - 🌈 节点选择
       - 🚆 GCP
-      - ♿ CN 优化
+      - 🚀 CN 优化
       - 🏗️ 自建
       - 🏡 二级代理
       - ✈️ 机场
