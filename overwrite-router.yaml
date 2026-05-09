@@ -194,7 +194,7 @@ rules:
   - PROCESS-NAME,zerotier-one_x64.exe,DIRECT
   - IP-CIDR,100.64.0.0/10,DIRECT,no-resolve      # Tailscale
   - AND,((NETWORK,UDP),(DST-PORT,41641)),DIRECT  # Tailscale 客户端常用端口
-  - DOMAIN,pkgs.tailscale.com,🚀 节点选择
+  - DOMAIN,pkgs.tailscale.com,🌈 节点选择
   - DOMAIN-SUFFIX,tailscale.com,DIRECT
   - DOMAIN-SUFFIX,ts.net,DIRECT
 
@@ -296,19 +296,19 @@ rules:
   - GEOSITE,category-games@cn,DIRECT             # 国内游戏直连
 
   # --- 需代理的服务 ---
-  - GEOSITE,steam,🚀 节点选择                    # Steam 社区与商店
-  - GEOSITE,telegram,🚀 节点选择
-  - GEOSITE,google,🚀 节点选择
-  - GEOSITE,github,🚀 节点选择
-  - GEOSITE,geolocation-!cn,🚀 节点选择          # 非中国区域名兜底走代理
-  - GEOIP,telegram,🚀 节点选择                   # 拦截 Telegram IP
+  - GEOSITE,steam,🌈 节点选择                    # Steam 社区与商店
+  - GEOSITE,telegram,🌈 节点选择
+  - GEOSITE,google,🌈 节点选择
+  - GEOSITE,github,🌈 节点选择
+  - GEOSITE,geolocation-!cn,🌈 节点选择          # 非中国区域名兜底走代理
+  - GEOIP,telegram,🌈 节点选择                   # 拦截 Telegram IP
 
   # --- 国内直连规则 ---
   - GEOSITE,cn,DIRECT
   - GEOIP,CN,DIRECT                              # 国内 IP 兜底直连
 
   # --- 全局兜底 ---
-  - MATCH,🚀 节点选择
+  - MATCH,🌈 节点选择
 
 # ========================================================
 # 节点组策略 (自动正则匹配)
