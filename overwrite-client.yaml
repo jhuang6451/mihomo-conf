@@ -471,7 +471,7 @@ proxy-groups:
     include-all: true
     filter: '(?i)新加坡|SG|Singapore'
 
-  - name: 🇩🇪 德国节点
+  - name: 🇩🇪 德国节点 URLTest
     type: url-test
     url: http://www.gstatic.com/generate_204
     interval: 300
@@ -479,7 +479,7 @@ proxy-groups:
     include-all: true
     filter: '(?i)德国|DE|Germany'
 
-  - name: 🇩🇪 德国节点 URLTest
+  - name: 🇩🇪 德国节点
     type: select
     include-all: true
     filter: '(?i)德国|DE|Germany'
