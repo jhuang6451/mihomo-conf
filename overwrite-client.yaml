@@ -220,6 +220,13 @@ rules:
   - DOMAIN-KEYWORD,btschool,DIRECT
   - DOMAIN-SUFFIX,lemonhd.net,DIRECT
 
+  # --- Google 服务分流 ---
+  - DOMAIN,beacons.gcp.gvt2.com,🌐 Google 服务
+  - DOMAIN-SUFFIX,google.com,🌐 Google 服务
+  - DOMAIN-SUFFIX,googleapis.com,🌐 Google 服务
+  - DOMAIN-SUFFIX,google.dev,🌐 Google 服务
+  - DOMAIN-SUFFIX,gstatic.com,🌐 Google 服务
+
   # --- AI 服务规则 ---
   - GEOSITE,category-ai-chat-!cn,🤖 AI 服务 # 将海外 AI 服务定向到自建节点
   - GEOSITE,category-ai-cn,DIRECT # 国内 AI 服务走直连
@@ -233,33 +240,33 @@ rules:
   - DOMAIN,mobile.events.data.microsoft.com,DIRECT
   - DOMAIN,store-images.s-microsoft.com,DIRECT
 
-  # --- Google 服务自定义分流 ---
-  - DOMAIN-SUFFIX,accounts.google.com,🤖 AI 服务
-  - DOMAIN-SUFFIX,gemini.google.com,🤖 AI 服务
-  - DOMAIN-SUFFIX,play.google.com,🤖 AI 服务
-  - DOMAIN-SUFFIX,aistudio.google.com,🤖 AI 服务
-  - DOMAIN-SUFFIX,makersuite.google.com,🤖 AI 服务
-  - DOMAIN-SUFFIX,mtalk.google.com,🤖 AI 服务
-  - DOMAIN-SUFFIX,ai.google.dev,🤖 AI 服务
-  - DOMAIN-SUFFIX,clients.google.com,🤖 AI 服务
-  - DOMAIN-SUFFIX,clients4.google.com,🤖 AI 服务
-  - DOMAIN-SUFFIX,clients6.google.com,🤖 AI 服务
+  # --- Google 服务分流 ---
+  # - DOMAIN-SUFFIX,accounts.google.com,🤖 AI 服务
+  # - DOMAIN-SUFFIX,gemini.google.com,🤖 AI 服务
+  # - DOMAIN-SUFFIX,play.google.com,🤖 AI 服务
+  # - DOMAIN-SUFFIX,aistudio.google.com,🤖 AI 服务
+  # - DOMAIN-SUFFIX,makersuite.google.com,🤖 AI 服务
+  # - DOMAIN-SUFFIX,mtalk.google.com,🤖 AI 服务
+  # - DOMAIN-SUFFIX,ai.google.dev,🤖 AI 服务
+  # - DOMAIN-SUFFIX,clients.google.com,🤖 AI 服务
+  # - DOMAIN-SUFFIX,clients4.google.com,🤖 AI 服务
+  # - DOMAIN-SUFFIX,clients6.google.com,🤖 AI 服务
 
-  - DOMAIN-SUFFIX,generativelanguage.googleapis.com,🤖 AI 服务
-  - DOMAIN-SUFFIX,geller-pa.googleapis.com,🤖 AI 服务
-  - DOMAIN-SUFFIX,cloudcode-pa.googleapis.com,🤖 AI 服务
-  - DOMAIN-SUFFIX,play.googleapis.com,🤖 AI 服务
-  - DOMAIN-SUFFIX,clientservices.googleapis.com,🤖 AI 服务
-  - DOMAIN-SUFFIX,oauth2.googleapis.com,🤖 AI 服务
-  - DOMAIN-SUFFIX,www.googleapis.com,🤖 AI 服务
+  # - DOMAIN-SUFFIX,generativelanguage.googleapis.com,🤖 AI 服务
+  # - DOMAIN-SUFFIX,geller-pa.googleapis.com,🤖 AI 服务
+  # - DOMAIN-SUFFIX,cloudcode-pa.googleapis.com,🤖 AI 服务
+  # - DOMAIN-SUFFIX,play.googleapis.com,🤖 AI 服务
+  # - DOMAIN-SUFFIX,clientservices.googleapis.com,🤖 AI 服务
+  # - DOMAIN-SUFFIX,oauth2.googleapis.com,🤖 AI 服务
+  # - DOMAIN-SUFFIX,www.googleapis.com,🤖 AI 服务
 
-  - DOMAIN,lh3.googleusercontent.com,🤖 AI 服务
-  - DOMAIN,antigravity-unleash.goog,🤖 AI 服务
+  # - DOMAIN,lh3.googleusercontent.com,🤖 AI 服务
+  # - DOMAIN,antigravity-unleash.goog,🤖 AI 服务
 
   # --- IP 解析站分流 ---
-  - DOMAIN-SUFFIX,whoer.net,🤖 AI 服务
-  - DOMAIN-SUFFIX,browserscan.net,🤖 AI 服务
-  - DOMAIN-SUFFIX,scamalytics.com,🤖 AI 服务
+  - DOMAIN-SUFFIX,whoer.net,🌐 Google 服务
+  - DOMAIN-SUFFIX,browserscan.net,🌐 Google 服务
+  - DOMAIN-SUFFIX,scamalytics.com,🌐 Google 服务
 
   # --- 镜像站自定义分流 ---
   - DOMAIN-SUFFIX,tuna.tsinghua.edu.cn,DIRECT
@@ -303,17 +310,67 @@ proxy-groups:
   - name: 🚀 节点选择
     type: select
     proxies:
-      - ♻️ 自动匹配 URLTest
       - 📍 所有节点
+      - ♻️ 自动匹配 URLTest
       - 🏗️ 自建
       - 🏗️ 自建 URLTest
       - 🏡 二级代理
       - 🇭🇰 香港节点
+      - 🇭🇰 香港节点 URLTest
       - 🇹🇼 台湾节点
+      - 🇹🇼 台湾节点 URLTest
       - 🇯🇵 日本节点
+      - 🇯🇵 日本节点 URLTest
       - 🇺🇸 美国节点
+      - 🇺🇸 美国节点 URLTest
       - 🇸🇬 新加坡节点
+      - 🇸🇬 新加坡节点 URLTest
       - 🇩🇪 德国节点
+      - 🇩🇪 德国节点 URLTest
+      - DIRECT
+
+  - name: 🤖 AI 服务
+    type: select
+    proxies:
+      - 📍 所有节点
+      - ♻️ 自动匹配 URLTest
+      - 🏗️ 自建
+      - 🏗️ 自建 URLTest
+      - 🏡 二级代理
+      - 🇭🇰 香港节点
+      - 🇭🇰 香港节点 URLTest
+      - 🇹🇼 台湾节点
+      - 🇹🇼 台湾节点 URLTest
+      - 🇯🇵 日本节点
+      - 🇯🇵 日本节点 URLTest
+      - 🇺🇸 美国节点
+      - 🇺🇸 美国节点 URLTest
+      - 🇸🇬 新加坡节点
+      - 🇸🇬 新加坡节点 URLTest
+      - 🇩🇪 德国节点
+      - 🇩🇪 德国节点 URLTest
+      - DIRECT
+  
+  - name: 🌐 Google 服务
+    type: select
+    proxies:
+      - 📍 所有节点
+      - ♻️ 自动匹配 URLTest
+      - 🏗️ 自建
+      - 🏗️ 自建 URLTest
+      - 🏡 二级代理
+      - 🇭🇰 香港节点
+      - 🇭🇰 香港节点 URLTest
+      - 🇹🇼 台湾节点
+      - 🇹🇼 台湾节点 URLTest
+      - 🇯🇵 日本节点
+      - 🇯🇵 日本节点 URLTest
+      - 🇺🇸 美国节点
+      - 🇺🇸 美国节点 URLTest
+      - 🇸🇬 新加坡节点
+      - 🇸🇬 新加坡节点 URLTest
+      - 🇩🇪 德国节点
+      - 🇩🇪 德国节点 URLTest
       - DIRECT
 
   - name: 📍 所有节点
@@ -330,7 +387,6 @@ proxy-groups:
     include-all: true
 
   # --- 2. 来源分组 (此处以 "追云加速" 和 "自建" 举例，请根据实际名称修改 filter) ---
-
   - name: 🏗️ 自建 URLTest
     type: url-test
     url: http://www.gstatic.com/generate_204
@@ -349,24 +405,8 @@ proxy-groups:
     include-all: true
     filter: '(?i)二级代理'
 
-  - name: 🤖 AI 服务
-    type: select
-    proxies:
-      - ♻️ 自动匹配 URLTest
-      - 📍 所有节点
-      - 🏗️ 自建
-      - 🏗️ 自建 URLTest
-      - 🏡 二级代理
-      - 🇭🇰 香港节点
-      - 🇹🇼 台湾节点
-      - 🇯🇵 日本节点
-      - 🇺🇸 美国节点
-      - 🇸🇬 新加坡节点
-      - 🇩🇪 德国节点
-      - DIRECT
-
   # --- 3. 地区分组 (组内自动选择最优) ---
-  - name: 🇭🇰 香港节点
+  - name: 🇭🇰 香港节点 URLTest
     type: url-test
     url: http://www.gstatic.com/generate_204
     interval: 300
@@ -374,7 +414,12 @@ proxy-groups:
     include-all: true
     filter: '(?i)香港|HK|Hong Kong'
 
-  - name: 🇹🇼 台湾节点
+  - name: 🇭🇰 香港节点
+    type: select
+    include-all: true
+    filter: '(?i)香港|HK|Hong Kong'
+
+  - name: 🇹🇼 台湾节点 URLTest
     type: url-test
     url: http://www.gstatic.com/generate_204
     interval: 300
@@ -382,7 +427,12 @@ proxy-groups:
     include-all: true
     filter: '(?i)台湾|TW|Taiwan'
 
-  - name: 🇯🇵 日本节点
+  - name: 🇹🇼 台湾节点
+    type: select
+    include-all: true
+    filter: '(?i)台湾|TW|Taiwan'
+
+  - name: 🇯🇵 日本节点 URLTest
     type: url-test
     url: http://www.gstatic.com/generate_204
     interval: 300
@@ -390,7 +440,12 @@ proxy-groups:
     include-all: true
     filter: '(?i)日本|JP|Japan'
 
-  - name: 🇺🇸 美国节点
+  - name: 🇯🇵 日本节点
+    type: select
+    include-all: true
+    filter: '(?i)日本|JP|Japan'
+
+  - name: 🇺🇸 美国节点 URLTest
     type: url-test
     url: http://www.gstatic.com/generate_204
     interval: 300
@@ -398,11 +453,21 @@ proxy-groups:
     include-all: true
     filter: '(?i)美国|US|United States'
 
-  - name: 🇸🇬 新加坡节点
+  - name: 🇺🇸 美国节点
+    type: select
+    include-all: true
+    filter: '(?i)美国|US|United States'
+
+  - name: 🇸🇬 新加坡节点 URLTest
     type: url-test
     url: http://www.gstatic.com/generate_204
     interval: 300
     tolerance: 50
+    include-all: true
+    filter: '(?i)新加坡|SG|Singapore'
+
+  - name: 🇸🇬 新加坡节点
+    type: select
     include-all: true
     filter: '(?i)新加坡|SG|Singapore'
 
@@ -411,6 +476,11 @@ proxy-groups:
     url: http://www.gstatic.com/generate_204
     interval: 300
     tolerance: 50
+    include-all: true
+    filter: '(?i)德国|DE|Germany'
+
+  - name: 🇩🇪 德国节点 URLTest
+    type: select
     include-all: true
     filter: '(?i)德国|DE|Germany'
 
