@@ -371,8 +371,9 @@ proxy-groups:
   - name: 🌐 Google AI 与 API 端点
     type: select
     proxies:
-      - 📍 所有节点
-      - ♻️ 自动匹配 URLTest
+      - 🌈 节点选择
+      - 🚆 GCP
+      - 🚀 CN 优化
       - 🏗️ 自建
       - 🏡 二级代理
       - ✈️ 机场
@@ -393,8 +394,9 @@ proxy-groups:
   - name: 🚀 Google 内容分发
     type: select
     proxies:
-      - 📍 所有节点
-      - ♻️ 自动匹配 URLTest
+      - 🌈 节点选择
+      - 🚆 GCP
+      - 🚀 CN 优化
       - 🏗️ 自建
       - 🏡 二级代理
       - ✈️ 机场
