@@ -148,6 +148,7 @@ dns:
     - "torrent.*"
     - "+.lemonhd.net"
     - "+.btschool.club"
+    - "+.ptcafe.club"
     # 自建站点
     - '+.elix1r.top'
     - '+.acc3l.top'
@@ -219,6 +220,7 @@ rules:
   # --- PT 站点直连 ---
   - DOMAIN-KEYWORD,btschool,DIRECT
   - DOMAIN-SUFFIX,lemonhd.net,DIRECT
+  - DOMAIN-SUFFIX,ptcafe.club,DIRECT
 
   # --- Google 服务分流 ---
   # -- 大流量/内容分发 --
