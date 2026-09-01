@@ -328,7 +328,7 @@ proxy-groups:
     proxies:
       - 📍 所有节点
       - ♻️ 自动匹配 URLTest
-      - 🚆 GCP
+      - 🚆 ISP 优化
       - 🚀 CN 优化
       - 🏗️ 自建
       - 🏡 二级代理
@@ -351,7 +351,7 @@ proxy-groups:
     type: select
     proxies:
       - 🌈 节点选择
-      - 🚆 GCP
+      - 🚆 ISP 优化
       - 🚀 CN 优化
       - 🏗️ 自建
       - 🏡 二级代理
@@ -374,7 +374,7 @@ proxy-groups:
     type: select
     proxies:
       - 🌈 节点选择
-      - 🚆 GCP
+      - 🚆 ISP 优化
       - 🚀 CN 优化
       - 🏗️ 自建
       - 🏡 二级代理
@@ -397,7 +397,7 @@ proxy-groups:
     type: select
     proxies:
       - 🌈 节点选择
-      - 🚆 GCP
+      - 🚆 ISP 优化
       - 🚀 CN 优化
       - 🏗️ 自建
       - 🏡 二级代理
@@ -433,11 +433,11 @@ proxy-groups:
     tolerance: 50
     include-all: true
 
-  # --- 2. 来源类别分组---
-  - name: 🚆 GCP
+  # --- 2. 类别分组---
+  - name: 🚆 ISP 优化
     type: select
     include-all: true
-    filter: '(?i)GCP|谷歌云|Google Cloud'
+    filter: '(?i)ISP|家宽|住宅'
 
   - name: 🚀 CN 优化
     type: select
