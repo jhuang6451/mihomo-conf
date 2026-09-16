@@ -187,7 +187,9 @@ dns:
 # 路由分流规则 (综合 geosite、geoip 与域名/IP)
 # ========================================================
 rules:
-  # --- P2P 与 内网直连防御 (最高优先级) ---
+  # --------------------------------------------------------
+  # 第一层级：P2P 与 内网直连防御 (最高优先级)
+  # --------------------------------------------------------
   - PROCESS-NAME,tailscaled.exe,DIRECT
   - PROCESS-NAME,tailscale-ipn.exe,DIRECT
   - PROCESS-NAME,tailscaled,DIRECT
@@ -209,40 +211,38 @@ rules:
   - IP-CIDR6,fe80::/10,DIRECT,no-resolve
   - DST-PORT,6881-6889,DIRECT                    # BT 常用端口
 
-  # --- 拦截目标端口为 443 的 UDP 流量 ---
+  # --------------------------------------------------------
+  # 第二层级：安全防御与屏蔽规则
+  # --------------------------------------------------------
+  # 拦截目标端口为 443 的 UDP 流量 (强制降级为 TCP，防止 QUIC 握手异常与干扰)
   - AND,((NETWORK,UDP),(DST-PORT,443)),REJECT
-
-  # --- 屏蔽广告与跟踪 ---
+  # 屏蔽广告与追踪
   - GEOSITE,category-ads-all,REJECT
 
-  # --- PT 站点直连 ---
+  # --------------------------------------------------------
+  # 第三层级：自建与私有流量直连
+  # --------------------------------------------------------
+  # PT 站点直连
   - DOMAIN-KEYWORD,btschool,DIRECT
   - DOMAIN-SUFFIX,lemonhd.net,DIRECT
   - DOMAIN-SUFFIX,ptcafe.club,DIRECT
+  # 自建站点
+  - DOMAIN-SUFFIX,elix1r.top,DIRECT
+  - DOMAIN-SUFFIX,acc3l.top,DIRECT
 
-  # --- Google 服务分流 ---
-  # -- 大流量/内容分发 --
-  - DOMAIN-SUFFIX,googlevideo.com,🚀 Google 内容分发
-  - DOMAIN-SUFFIX,gvt1.com,🚀 Google 内容分发
-  - DOMAIN-SUFFIX,gvt2.com,🚀 Google 内容分发
-  - DOMAIN-SUFFIX,gvt3.com,🚀 Google 内容分发
-  - DOMAIN-SUFFIX,googleusercontent.com,🚀 Google 内容分发
-  - DOMAIN-SUFFIX,gstatic.com,🚀 Google 内容分发
-  - DOMAIN-SUFFIX,ytimg.com,🚀 Google 内容分发
-  - DOMAIN-SUFFIX,ggpht.com,🚀 Google 内容分发
-  - DOMAIN-KEYWORD,google-download,🚀 Google 内容分发
+  # --------------------------------------------------------
+  # 第四层级：国内 CDN 分流与国内大厂/服务直连 (国内 CDN 防御)
+  # 说明：必须优先直连所有在中国大陆具备 CDN/节点的流量，
+  # 从而确保后续流入【🚀 内容分发】的均为“无国内CDN分流的海外大流量”。
+  # --------------------------------------------------------
+  # 国内镜像站与包管理器
+  - DOMAIN-SUFFIX,tuna.tsinghua.edu.cn,DIRECT
+  - DOMAIN-SUFFIX,ustc.edu.cn,DIRECT
+  - DOMAIN-SUFFIX,1ms.run,DIRECT
+  - DOMAIN-SUFFIX,mirrors.aliyun.com,DIRECT
+  - DOMAIN,registry.npmjs.org,DIRECT
 
-  # -- AI 与 API 端点 --
-  - DOMAIN-SUFFIX,google.com,🌐 Google AI 与 API 端点
-  - DOMAIN-SUFFIX,googleapis.com,🌐 Google AI 与 API 端点
-  - DOMAIN-SUFFIX,google.dev,🌐 Google AI 与 API 端点
-  - DOMAIN-SUFFIX,gstatic.com,🌐 Google AI 与 API 端点
-
-  # --- AI 服务规则 ---
-  - GEOSITE,category-ai-chat-!cn,🤖 AI 服务 # 将海外 AI 服务定向到自建节点
-  - GEOSITE,category-ai-cn,DIRECT # 国内 AI 服务走直连
-
-  # --- 微软服务自定义分流 ---
+  # 微软国内直连服务 (OneDrive/SharePoint/图片与事件上报)
   - DOMAIN,my.microsoftpersonalcontent.com,DIRECT
   - DOMAIN-SUFFIX,onedrive.com,DIRECT
   - DOMAIN,skyapi.live.net,DIRECT
@@ -250,67 +250,239 @@ rules:
   - DOMAIN-SUFFIX,sharepoint.com,DIRECT
   - DOMAIN,mobile.events.data.microsoft.com,DIRECT
   - DOMAIN,store-images.s-microsoft.com,DIRECT
+  - GEOSITE,microsoft@cn,DIRECT
 
-  # --- Google 服务分流 ---
-  # - DOMAIN-SUFFIX,accounts.google.com,🤖 AI 服务
-  # - DOMAIN-SUFFIX,gemini.google.com,🤖 AI 服务
-  # - DOMAIN-SUFFIX,play.google.com,🤖 AI 服务
-  # - DOMAIN-SUFFIX,aistudio.google.com,🤖 AI 服务
-  # - DOMAIN-SUFFIX,makersuite.google.com,🤖 AI 服务
-  # - DOMAIN-SUFFIX,mtalk.google.com,🤖 AI 服务
-  # - DOMAIN-SUFFIX,ai.google.dev,🤖 AI 服务
-  # - DOMAIN-SUFFIX,clients.google.com,🤖 AI 服务
-  # - DOMAIN-SUFFIX,clients4.google.com,🤖 AI 服务
-  # - DOMAIN-SUFFIX,clients6.google.com,🤖 AI 服务
+  # Apple 国内直连服务
+  - GEOSITE,apple@cn,DIRECT
+  - GEOSITE,apple,DIRECT
 
-  # - DOMAIN-SUFFIX,generativelanguage.googleapis.com,🤖 AI 服务
-  # - DOMAIN-SUFFIX,geller-pa.googleapis.com,🤖 AI 服务
-  # - DOMAIN-SUFFIX,cloudcode-pa.googleapis.com,🤖 AI 服务
-  # - DOMAIN-SUFFIX,play.googleapis.com,🤖 AI 服务
-  # - DOMAIN-SUFFIX,clientservices.googleapis.com,🤖 AI 服务
-  # - DOMAIN-SUFFIX,oauth2.googleapis.com,🤖 AI 服务
-  # - DOMAIN-SUFFIX,www.googleapis.com,🤖 AI 服务
+  # 国内主流 CDN 及海外大厂在中国大陆境内的 CDN 节点 (关键分流防御)
+  - GEOSITE,category-cdn-cn,DIRECT
+  - GEOSITE,category-cdn-!cn@cn,DIRECT
 
-  # - DOMAIN,lh3.googleusercontent.com,🤖 AI 服务
-  # - DOMAIN,antigravity-unleash.goog,🤖 AI 服务
+  # 游戏平台国内 CDN 下载服务器 (如 Steam 中国区节点、Xbox 国内直连、暴雪网易节点等)
+  - GEOSITE,category-game-platforms-download@cn,DIRECT
+  - GEOSITE,steam@cn,DIRECT
+  - GEOSITE,category-games@cn,DIRECT
 
-  # --- IP 解析站分流 ---
-  - DOMAIN-SUFFIX,whoer.net,🌐 Google AI 与 API 端点
-  - DOMAIN-SUFFIX,browserscan.net,🌐 Google AI 与 API 端点
-  - DOMAIN-SUFFIX,scamalytics.com,🌐 Google AI 与 API 端点
+  # 国内 AI 服务直连 (如 Kimi、智谱清言、百度文心、DeepSeek 官方直连等)
+  - GEOSITE,category-ai-cn,DIRECT
 
-  # --- 镜像站自定义分流 ---
-  - DOMAIN-SUFFIX,tuna.tsinghua.edu.cn,DIRECT
-  - DOMAIN-SUFFIX,ustc.edu.cn,DIRECT
-  - DOMAIN-SUFFIX,1ms.run,DIRECT
-  - DOMAIN-SUFFIX,mirrors.aliyun.com,DIRECT
-  - DOMAIN,registry.npmjs.org,DIRECT             # NPM 官方注册表
+  # --------------------------------------------------------
+  # 第五层级：🤖 AI 服务 (海外 AI 模型与本地开发工具全量端点)
+  # 说明：严格位于通用 Google / API 规则之前！防止 Gemini/AI Studio
+  # 域名被 generic google.com / googleapis.com 误截流。
+  # 包含 Gemini、Grok、ChatGPT、Claude 以及本地开发工具 (Cursor, Windsurf, Copilot 等)
+  # --------------------------------------------------------
+  # -- Google Gemini / AI Studio / Antigravity / DeepMind 相关精准端点 --
+  - DOMAIN,generativelanguage.googleapis.com,🤖 AI 服务     # Gemini API 核心调用端点
+  - DOMAIN,aistudio.google.com,🤖 AI 服务                   # Google AI Studio 网页端
+  - DOMAIN,makersuite.google.com,🤖 AI 服务                 # MakerSuite
+  - DOMAIN,alkalicore-pa.clients6.google.com,🤖 AI 服务     # Gemini 内部核心通道
+  - DOMAIN,alkalimakersuite-pa.clients6.google.com,🤖 AI 服务
+  - DOMAIN,webchannel-alkalimakersuite-pa.clients6.google.com,🤖 AI 服务
+  - DOMAIN,cloudaicompanion.googleapis.com,🤖 AI 服务       # Cloud AI Companion
+  - DOMAIN,cloudcode-pa.googleapis.com,🤖 AI 服务           # Cloud Code 插件
+  - DOMAIN,daily-cloudcode-pa.googleapis.com,🤖 AI 服务
+  - DOMAIN,notebooklm-pa.googleapis.com,🤖 AI 服务          # NotebookLM API
+  - DOMAIN,notebooklm.googleapis.com,🤖 AI 服务
+  - DOMAIN,antigravity-pa.googleapis.com,🤖 AI 服务         # Antigravity 核心端点
+  - DOMAIN,antigravity.googleapis.com,🤖 AI 服务
+  - DOMAIN,antigravity-unleash.goog,🤖 AI 服务              # Antigravity Unleash 特性网关
+  - DOMAIN,geller-pa.googleapis.com,🤖 AI 服务              # Google AI 交互协议
+  - DOMAIN,proactivebackend-pa.googleapis.com,🤖 AI 服务
+  - DOMAIN,aicode.googleapis.com,🤖 AI 服务                 # Google AI Code 辅助端点
+  - DOMAIN,aisandbox-pa.googleapis.com,🤖 AI 服务
+  - DOMAIN,aida.googleapis.com,🤖 AI 服务                   # AIDA 对话引擎
+  - DOMAIN,robinfrontend-pa.googleapis.com,🤖 AI 服务
+  - DOMAIN,stitch.withgoogle.com,🤖 AI 服务
+  - DOMAIN-SUFFIX,gemini.google.com,🤖 AI 服务              # Gemini 网页端
+  - DOMAIN-SUFFIX,ai.google.dev,🤖 AI 服务                  # Google AI 开发者门户
+  - DOMAIN-SUFFIX,gemini.gstatic.com,🤖 AI 服务             # Gemini 前端资源
+  - DOMAIN-SUFFIX,notebooklm.google,🤖 AI 服务
+  - DOMAIN-SUFFIX,notebooklm.google.com,🤖 AI 服务
+  - DOMAIN-SUFFIX,deepmind.google,🤖 AI 服务
+  - DOMAIN-SUFFIX,deepmind.com,🤖 AI 服务
+  - DOMAIN-SUFFIX,generativeai.google,🤖 AI 服务
+  - DOMAIN-SUFFIX,ai.studio,🤖 AI 服务
+  - DOMAIN-SUFFIX,labs.google,🤖 AI 服务
+  - DOMAIN-SUFFIX,labs.google.com,🤖 AI 服务
+  - DOMAIN-SUFFIX,jules.google,🤖 AI 服务
+  - DOMAIN-SUFFIX,jules.google.com,🤖 AI 服务
+  - DOMAIN-SUFFIX,opal.google,🤖 AI 服务
+  - DOMAIN-SUFFIX,flow.google,🤖 AI 服务
 
-  # --- 其他自定义域名/IP 定向 ---
-  - DOMAIN-SUFFIX,elix1r.top,DIRECT              # 自建站点
-  - DOMAIN-SUFFIX,acc3l.top,DIRECT               # 自建站点
+  # -- OpenAI / ChatGPT / Codex / Sora 核心端点 --
+  - DOMAIN-SUFFIX,chatgpt.com,🤖 AI 服务                    # ChatGPT 网页端与 API
+  - DOMAIN-SUFFIX,openai.com,🤖 AI 服务                     # OpenAI 官方 API 与控制台
+  - DOMAIN-SUFFIX,chat.com,🤖 AI 服务
+  - DOMAIN-SUFFIX,sora.com,🤖 AI 服务                       # Sora 视频生成
+  - DOMAIN-SUFFIX,oaistatic.com,🤖 AI 服务                  # ChatGPT 前端静态资源
+  - DOMAIN-SUFFIX,oaiusercontent.com,🤖 AI 服务              # ChatGPT 生成内容存储
+  - DOMAIN-SUFFIX,oaistatsig.com,🤖 AI 服务
+  - DOMAIN-SUFFIX,chatgpt.livekit.cloud,🤖 AI 服务          # ChatGPT 实时语音交互
+  - DOMAIN-SUFFIX,host.livekit.cloud,🤖 AI 服务
+  - DOMAIN-SUFFIX,turn.livekit.cloud,🤖 AI 服务
+  - DOMAIN-SUFFIX,openai.com.cdn.cloudflare.net,🤖 AI 服务
+  - DOMAIN-SUFFIX,openaiapi-site.azureedge.net,🤖 AI 服务
+  - DOMAIN-SUFFIX,production-openaicom-storage.azureedge.net,🤖 AI 服务
 
-  # --- 常用流量直连规则 ---
-  - GEOSITE,steam@cn,DIRECT                      # Steam 中国区及下载直连
-  - GEOSITE,apple@cn,DIRECT                      # Apple 国内直连
-  - GEOSITE,microsoft@cn,DIRECT                  # 微软 国内直连
-  - GEOSITE,apple,DIRECT                         # Apple 全局偏好直连
-  - GEOSITE,category-games@cn,DIRECT             # 国内游戏直连
+  # -- Anthropic / Claude (网页端、API、Claude Code、MCP) --
+  - DOMAIN-SUFFIX,anthropic.com,🤖 AI 服务                  # Anthropic 官网与 API
+  - DOMAIN-SUFFIX,claude.ai,🤖 AI 服务                      # Claude 网页端
+  - DOMAIN-SUFFIX,claude.com,🤖 AI 服务
+  - DOMAIN-SUFFIX,clau.de,🤖 AI 服务                        # 短链
+  - DOMAIN-SUFFIX,claudemcpclient.com,🤖 AI 服务            # Claude MCP 客户端通信
+  - DOMAIN-SUFFIX,claudemcpcontent.com,🤖 AI 服务           # Claude MCP 内容端点
+  - DOMAIN-SUFFIX,claudeusercontent.com,🤖 AI 服务          # Claude 用户上传与渲染资源
+  - DOMAIN-SUFFIX,servd-anthropic-website.b-cdn.net,🤖 AI 服务
 
-  # --- 需代理的服务 ---
-  - GEOSITE,steam,🌈 节点选择                    # Steam 社区与商店
-  - GEOSITE,telegram,🌈 节点选择
-  - GEOSITE,google,🌈 节点选择
-  - GEOSITE,github,🌈 节点选择
-  - GEOSITE,geolocation-!cn,🌈 节点选择          # 非中国区域名兜底走代理
-  - GEOIP,telegram,🌈 节点选择                   # 拦截 Telegram IP
+  # -- xAI / Grok --
+  - DOMAIN-SUFFIX,x.ai,🤖 AI 服务                           # xAI 官网与 API
+  - DOMAIN-SUFFIX,grok.com,🤖 AI 服务                       # Grok 独立网页端
+  - DOMAIN-SUFFIX,grokipedia.com,🤖 AI 服务
+  - DOMAIN-SUFFIX,grok.x.com,🤖 AI 服务                     # X(Twitter) 集成端点
 
-  # --- 国内直连规则 ---
-  - GEOSITE,cn,DIRECT
-  - GEOIP,CN,DIRECT                              # 国内 IP 兜底直连
+  # -- 本地编码 AI / IDE 扩展 (Cursor, Windsurf, Copilot, JetBrains AI 等) --
+  - DOMAIN-SUFFIX,cursor.com,🤖 AI 服务                     # Cursor 官网与鉴权
+  - DOMAIN-SUFFIX,cursor.sh,🤖 AI 服务                      # Cursor 核心请求与后台通信
+  - DOMAIN-SUFFIX,cursorapi.com,🤖 AI 服务                  # Cursor 模型补全 API
+  - DOMAIN-SUFFIX,cursor-cdn.com,🤖 AI 服务
+  - DOMAIN-SUFFIX,windsurf.build,🤖 AI 服务                 # Windsurf IDE 端点
+  - DOMAIN-SUFFIX,windsurf.com,🤖 AI 服务
+  - DOMAIN-SUFFIX,codeium.com,🤖 AI 服务                    # Codeium
+  - DOMAIN-SUFFIX,codeiumdata.com,🤖 AI 服务
+  - DOMAIN-SUFFIX,githubcopilot.com,🤖 AI 服务              # GitHub Copilot 独立端点
+  - DOMAIN,copilot-proxy.githubusercontent.com,🤖 AI 服务   # Copilot 代理通信
+  - DOMAIN,copilot-workspace.githubnext.com,🤖 AI 服务
+  - DOMAIN,copilotprodattachments.blob.core.windows.net,🤖 AI 服务
+  - DOMAIN,copilot-telemetry-service.githubusercontent.com,🤖 AI 服务
+  - DOMAIN,copilot-telemetry.githubusercontent.com,🤖 AI 服务
 
-  # --- 全局兜底 ---
-  - MATCH,🌈 节点选择
+  # -- 知名海外模型聚合与开源端点 (Perplexity, Groq, Mistral, HuggingFace 等) --
+  - DOMAIN-SUFFIX,perplexity.ai,🤖 AI 服务                  # Perplexity 搜索与 API
+  - DOMAIN-SUFFIX,pplx.ai,🤖 AI 服务
+  - DOMAIN-SUFFIX,groq.com,🤖 AI 服务                       # Groq 极速推理
+  - DOMAIN-SUFFIX,mistral.ai,🤖 AI 服务                    # Mistral AI
+  - DOMAIN-SUFFIX,cohere.com,🤖 AI 服务                     # Cohere
+  - DOMAIN-SUFFIX,cohere.ai,🤖 AI 服务
+  - DOMAIN-SUFFIX,openrouter.ai,🤖 AI 服务                  # OpenRouter API 网关
+  - DOMAIN-SUFFIX,huggingface.co,🤖 AI 服务                 # HuggingFace 模型空间
+  - DOMAIN-SUFFIX,hf.space,🤖 AI 服务
+  - DOMAIN-SUFFIX,hf.co,🤖 AI 服务
+
+  # -- MetaCubeX geosite 数据库 AI 类目规则兜底匹配 --
+  - GEOSITE,category-ai-!cn,🤖 AI 服务                     # 匹配 meta-rules-dat 中所有海外 AI 服务
+  - GEOSITE,openai,🤖 AI 服务
+  - GEOSITE,anthropic,🤖 AI 服务
+  - GEOSITE,google-gemini,🤖 AI 服务
+  - GEOSITE,xai,🤖 AI 服务
+  - GEOSITE,github-copilot,🤖 AI 服务
+  - GEOSITE,perplexity,🤖 AI 服务
+  - GEOSITE,groq,🤖 AI 服务
+  - GEOSITE,jetbrains-ai,🤖 AI 服务
+
+  # --------------------------------------------------------
+  # 第六层级：🚀 内容分发 (海外大流量下载 / 流式传输 / 纯海外 CDN)
+  # 说明：涵盖 YouTube、海外流媒体、应用商店安装包、网盘大文件传输、
+  # 容器镜像拉取、无国内 CDN 的游戏平台分发与纯海外 CDN。
+  # --------------------------------------------------------
+  # -- YouTube 视频流与 Google 大流量内容分发 --
+  - GEOSITE,youtube,🚀 内容分发
+  - DOMAIN-SUFFIX,googlevideo.com,🚀 内容分发               # YouTube 视频缓冲与播放流
+  - DOMAIN-SUFFIX,gvt1.com,🚀 内容分发                      # Google Video / Widevine / 下载
+  - DOMAIN-SUFFIX,gvt2.com,🚀 内容分发
+  - DOMAIN-SUFFIX,gvt3.com,🚀 内容分发
+  - DOMAIN-SUFFIX,googleusercontent.com,🚀 内容分发         # Google 大文件用户静态分发
+  - DOMAIN-SUFFIX,ytimg.com,🚀 内容分发                     # YouTube 缩略图与高码率资源
+  - DOMAIN-SUFFIX,ggpht.com,🚀 内容分发
+  - DOMAIN-KEYWORD,google-download,🚀 内容分发
+
+  # -- 海外主流视音频流媒体 (Streaming Media) --
+  - GEOSITE,netflix,🚀 内容分发                             # Netflix 奈飞
+  - GEOSITE,disney,🚀 内容分发                              # Disney+ 迪士尼
+  - GEOSITE,spotify,🚀 内容分发                             # Spotify 音频流
+  - GEOSITE,twitch,🚀 内容分发                              # Twitch 游戏直播流
+  - GEOSITE,hbo,🚀 内容分发                                 # HBO Max
+  - GEOSITE,primevideo,🚀 内容分发                          # 亚马逊 Prime Video
+  - GEOSITE,hulu,🚀 内容分发                                # Hulu
+  - GEOSITE,abema,🚀 内容分发                               # 日本 AbemaTV
+  - GEOSITE,bahamut,🚀 内容分发                             # 巴哈姆特动画疯
+  - GEOSITE,soundcloud,🚀 内容分发                          # SoundCloud 音频流
+  - GEOSITE,deezer,🚀 内容分发
+  - GEOSITE,tidal,🚀 内容分发                               # Tidal 高解析音频
+  - GEOSITE,tiktok@!cn,🚀 内容分发                          # TikTok 海外视频流
+
+  # -- 无国内节点的纯海外 CDN 分发 (Pure Overseas CDN) --
+  # 注：带国内节点的 category-cdn-!cn@cn 与 category-cdn-cn 已在前置层级直连
+  - GEOSITE,category-cdn-!cn,🚀 内容分发
+  - GEOSITE,cdn77,🚀 内容分发
+  - GEOSITE,vrcdn,🚀 内容分发
+
+  # -- 海外大流量下载 / 应用分发 / 网盘 / 容器镜像拉取 --
+  - GEOSITE,category-android-app-download,🚀 内容分发       # Google Play 与海外应用商店安装包
+  - GEOSITE,category-netdisk-!cn,🚀 内容分发                # Mega / Dropbox 等海外网盘传输
+  - GEOSITE,category-container,🚀 内容分发                 # Docker Hub / Quay / GCR / GHCR 容器镜像拉取
+  - DOMAIN,objects.githubusercontent.com,🚀 内容分发        # GitHub Releases 大文件二进制资产
+  - DOMAIN,raw.githubusercontent.com,🚀 内容分发            # GitHub Raw 文件拉取
+  - DOMAIN-SUFFIX,github-releases.githubusercontent.com,🚀 内容分发
+
+  # -- 游戏平台无国内 CDN 的海外下载服务器 --
+  # 注：Steam 中国区及具备国内分流的 category-game-platforms-download@cn 已在前置层级直连
+  - GEOSITE,category-game-platforms-download,🚀 内容分发
+
+  # --------------------------------------------------------
+  # 第七层级：🌐 API 端点 (其他小流量 API 与探针)
+  # 说明：涵盖 Google 通用基础服务与 API（非大流量、非 AI）、
+  # IP 查询/环境探针、开发平台 API、认证与轻量 Webhooks。
+  # --------------------------------------------------------
+  # -- Google 通用基础服务与小流量 API (已排除 YouTube 视频流与 Gemini AI) --
+  - DOMAIN-SUFFIX,google.com,🌐 API 端点
+  - DOMAIN-SUFFIX,googleapis.com,🌐 API 端点
+  - DOMAIN-SUFFIX,google.dev,🌐 API 端点
+  - DOMAIN-SUFFIX,gstatic.com,🌐 API 端点
+  - DOMAIN-SUFFIX,1e100.net,🌐 API 端点
+  - DOMAIN-SUFFIX,googledrive.com,🌐 API 端点               # 云端硬盘元数据与轻量 API
+  - DOMAIN-SUFFIX,appspot.com,🌐 API 端点
+  - GEOSITE,google,🌐 API 端点
+
+  # -- IP 解析站与地理位置探测 API (低频小流量探针) --
+  - GEOSITE,category-ip-geo-detect@!cn,🌐 API 端点          # meta-rules-dat 官方 IP 探测库
+  - DOMAIN-SUFFIX,whoer.net,🌐 API 端点
+  - DOMAIN-SUFFIX,browserscan.net,🌐 API 端点
+  - DOMAIN-SUFFIX,scamalytics.com,🌐 API 端点
+  - DOMAIN-SUFFIX,ipinfo.io,🌐 API 端点
+  - DOMAIN-SUFFIX,ipapi.co,🌐 API 端点
+  - DOMAIN-SUFFIX,ip.sb,🌐 API 端点
+  - DOMAIN-SUFFIX,ip-api.com,🌐 API 端点
+  - DOMAIN-SUFFIX,browserleaks.com,🌐 API 端点
+
+  # -- 开发者平台通用 API、鉴权服务与轻量交互 --
+  - DOMAIN,api.github.com,🌐 API 端点                       # GitHub REST / GraphQL API
+  - DOMAIN,auth.docker.io,🌐 API 端点                       # Docker 镜像鉴权端点 (非数据流)
+  - DOMAIN,registry-1.docker.io,🌐 API 端点
+  - DOMAIN-SUFFIX,sentry.io,🌐 API 端点                     # 错误上报 API
+  - DOMAIN-SUFFIX,gravatar.com,🌐 API 端点                  # 头像元数据
+  - DOMAIN-SUFFIX,stripe.com,🌐 API 端点                    # 支付鉴权 API
+  - DOMAIN-SUFFIX,paypal.com,🌐 API 端点
+  - DOMAIN-SUFFIX,recaptcha.net,🌐 API 端点                 # 人机验证 API
+  - DOMAIN-SUFFIX,hcaptcha.com,🌐 API 端点
+
+  # --------------------------------------------------------
+  # 第八层级：常规海外代理与常用服务
+  # --------------------------------------------------------
+  - GEOSITE,steam,🌈 节点选择                              # Steam 商店与社区浏览 (下载走上述直连/分发)
+  - GEOSITE,telegram,🌈 节点选择                           # Telegram 客户端
+  - GEOIP,telegram,🌈 节点选择                             # Telegram IP 网段
+  - GEOSITE,github,🌈 节点选择                             # GitHub 网页与 Git 操作
+  - GEOSITE,geolocation-!cn,🌈 节点选择                    # 非中国区域名兜底走主代理节点
+
+  # --------------------------------------------------------
+  # 第九层级：国内直连兜底与全局最终兜底
+  # --------------------------------------------------------
+  - GEOSITE,cn,DIRECT                                      # 国内所有合规域名走直连
+  - GEOIP,CN,DIRECT                                        # 中国大陆 IP 走直连
+  - MATCH,🌈 节点选择                                      # 未命中的剩余海外流量走节点选择
 
 # ========================================================
 # 节点组策略 (自动正则匹配)
@@ -325,7 +497,7 @@ proxy-groups:
     proxies:
       - 📍 所有节点
       - ♻️ 自动匹配 URLTest
-      - 🚆 GCP
+      - 🚆 ISP 优化
       - 🚀 CN 优化
       - 🏗️ 自建
       - 🏡 二级代理
@@ -348,30 +520,7 @@ proxy-groups:
     type: select
     proxies:
       - 🌈 节点选择
-      - 🚆 GCP
-      - 🚀 CN 优化
-      - 🏗️ 自建
-      - 🏡 二级代理
-      - ✈️ 机场
-      - 🇭🇰 香港节点
-      - 🇭🇰 香港节点 URLTest
-      - 🇹🇼 台湾节点
-      - 🇹🇼 台湾节点 URLTest
-      - 🇯🇵 日本节点
-      - 🇯🇵 日本节点 URLTest
-      - 🇺🇸 美国节点
-      - 🇺🇸 美国节点 URLTest
-      - 🇸🇬 新加坡节点
-      - 🇸🇬 新加坡节点 URLTest
-      - 🇩🇪 德国节点
-      - 🇩🇪 德国节点 URLTest
-      - DIRECT
-  
-  - name: 🌐 Google AI 与 API 端点
-    type: select
-    proxies:
-      - 🌈 节点选择
-      - 🚆 GCP
+      - 🚆 ISP 优化
       - 🚀 CN 优化
       - 🏗️ 自建
       - 🏡 二级代理
@@ -390,11 +539,34 @@ proxy-groups:
       - 🇩🇪 德国节点 URLTest
       - DIRECT
 
-  - name: 🚀 Google 内容分发
+  - name: 🌐 API 端点
     type: select
     proxies:
       - 🌈 节点选择
-      - 🚆 GCP
+      - 🚆 ISP 优化
+      - 🚀 CN 优化
+      - 🏗️ 自建
+      - 🏡 二级代理
+      - ✈️ 机场
+      - 🇭🇰 香港节点
+      - 🇭🇰 香港节点 URLTest
+      - 🇹🇼 台湾节点
+      - 🇹🇼 台湾节点 URLTest
+      - 🇯🇵 日本节点
+      - 🇯🇵 日本节点 URLTest
+      - 🇺🇸 美国节点
+      - 🇺🇸 美国节点 URLTest
+      - 🇸🇬 新加坡节点
+      - 🇸🇬 新加坡节点 URLTest
+      - 🇩🇪 德国节点
+      - 🇩🇪 德国节点 URLTest
+      - DIRECT
+
+  - name: 🚀 内容分发
+    type: select
+    proxies:
+      - 🌈 节点选择
+      - 🚆 ISP 优化
       - 🚀 CN 优化
       - 🏗️ 自建
       - 🏡 二级代理
@@ -431,10 +603,10 @@ proxy-groups:
     include-all: true
 
   # --- 2. 来源类别分组---
-  - name: 🚆 GCP
+  - name: 🚆 ISP 优化
     type: select
     include-all: true
-    filter: '(?i)GCP|谷歌云|Google Cloud'
+    filter: '(?i)ISP|家宽|住宅'
 
   - name: 🚀 CN 优化
     type: select
