@@ -271,118 +271,129 @@ rules:
   - GEOSITE,category-ai-cn,DIRECT
 
   # --------------------------------------------------------
-  # 第五层级：🤖 AI 服务 (海外 AI 模型与本地开发工具全量端点)
+  # 第五层级：AI 服务细分分流 (Gemini / ChatGPT / Claude / 其他海外 AI)
   # 说明：严格位于通用 Google / API 规则之前！防止 Gemini/AI Studio
   # 域名被 generic google.com / googleapis.com 误截流。
-  # 包含 Gemini、Grok、ChatGPT、Claude 以及本地开发工具 (Cursor, Windsurf, Copilot 等)
   # --------------------------------------------------------
-  # -- Google Gemini / AI Studio / Antigravity / DeepMind 相关精准端点 --
-  - DOMAIN,generativelanguage.googleapis.com,🤖 AI 服务     # Gemini API 核心调用端点
-  - DOMAIN,aistudio.google.com,🤖 AI 服务                   # Google AI Studio 网页端
-  - DOMAIN,makersuite.google.com,🤖 AI 服务                 # MakerSuite
-  - DOMAIN,alkalicore-pa.clients6.google.com,🤖 AI 服务     # Gemini 内部核心通道
-  - DOMAIN,alkalimakersuite-pa.clients6.google.com,🤖 AI 服务
-  - DOMAIN,webchannel-alkalimakersuite-pa.clients6.google.com,🤖 AI 服务
-  - DOMAIN,cloudaicompanion.googleapis.com,🤖 AI 服务       # Cloud AI Companion
-  - DOMAIN,cloudcode-pa.googleapis.com,🤖 AI 服务           # Cloud Code 插件
-  - DOMAIN,daily-cloudcode-pa.googleapis.com,🤖 AI 服务
-  - DOMAIN,notebooklm-pa.googleapis.com,🤖 AI 服务          # NotebookLM API
-  - DOMAIN,notebooklm.googleapis.com,🤖 AI 服务
-  - DOMAIN,antigravity-pa.googleapis.com,🤖 AI 服务         # Antigravity 核心端点
-  - DOMAIN,antigravity.googleapis.com,🤖 AI 服务
-  - DOMAIN,antigravity-unleash.goog,🤖 AI 服务              # Antigravity Unleash 特性网关
-  - DOMAIN,geller-pa.googleapis.com,🤖 AI 服务              # Google AI 交互协议
-  - DOMAIN,proactivebackend-pa.googleapis.com,🤖 AI 服务
-  - DOMAIN,aicode.googleapis.com,🤖 AI 服务                 # Google AI Code 辅助端点
-  - DOMAIN,aisandbox-pa.googleapis.com,🤖 AI 服务
-  - DOMAIN,aida.googleapis.com,🤖 AI 服务                   # AIDA 对话引擎
-  - DOMAIN,robinfrontend-pa.googleapis.com,🤖 AI 服务
-  - DOMAIN,stitch.withgoogle.com,🤖 AI 服务
-  - DOMAIN-SUFFIX,gemini.google.com,🤖 AI 服务              # Gemini 网页端
-  - DOMAIN-SUFFIX,ai.google.dev,🤖 AI 服务                  # Google AI 开发者门户
-  - DOMAIN-SUFFIX,gemini.gstatic.com,🤖 AI 服务             # Gemini 前端资源
-  - DOMAIN-SUFFIX,notebooklm.google,🤖 AI 服务
-  - DOMAIN-SUFFIX,notebooklm.google.com,🤖 AI 服务
-  - DOMAIN-SUFFIX,deepmind.google,🤖 AI 服务
-  - DOMAIN-SUFFIX,deepmind.com,🤖 AI 服务
-  - DOMAIN-SUFFIX,generativeai.google,🤖 AI 服务
-  - DOMAIN-SUFFIX,ai.studio,🤖 AI 服务
-  - DOMAIN-SUFFIX,labs.google,🤖 AI 服务
-  - DOMAIN-SUFFIX,labs.google.com,🤖 AI 服务
-  - DOMAIN-SUFFIX,jules.google,🤖 AI 服务
-  - DOMAIN-SUFFIX,jules.google.com,🤖 AI 服务
-  - DOMAIN-SUFFIX,opal.google,🤖 AI 服务
-  - DOMAIN-SUFFIX,flow.google,🤖 AI 服务
+  # -- 国内 AI 服务直连 (如 Kimi、智谱清言、百度文心、DeepSeek 官方直连等) --
+  - GEOSITE,category-ai-cn,DIRECT
 
-  # -- OpenAI / ChatGPT / Codex / Sora 核心端点 --
-  - DOMAIN-SUFFIX,chatgpt.com,🤖 AI 服务                    # ChatGPT 网页端与 API
-  - DOMAIN-SUFFIX,openai.com,🤖 AI 服务                     # OpenAI 官方 API 与控制台
-  - DOMAIN-SUFFIX,chat.com,🤖 AI 服务
-  - DOMAIN-SUFFIX,sora.com,🤖 AI 服务                       # Sora 视频生成
-  - DOMAIN-SUFFIX,oaistatic.com,🤖 AI 服务                  # ChatGPT 前端静态资源
-  - DOMAIN-SUFFIX,oaiusercontent.com,🤖 AI 服务              # ChatGPT 生成内容存储
-  - DOMAIN-SUFFIX,oaistatsig.com,🤖 AI 服务
-  - DOMAIN-SUFFIX,chatgpt.livekit.cloud,🤖 AI 服务          # ChatGPT 实时语音交互
-  - DOMAIN-SUFFIX,host.livekit.cloud,🤖 AI 服务
-  - DOMAIN-SUFFIX,turn.livekit.cloud,🤖 AI 服务
-  - DOMAIN-SUFFIX,openai.com.cdn.cloudflare.net,🤖 AI 服务
-  - DOMAIN-SUFFIX,openaiapi-site.azureedge.net,🤖 AI 服务
-  - DOMAIN-SUFFIX,production-openaicom-storage.azureedge.net,🤖 AI 服务
+  # ========================================================
+  # 1. ✨ Gemini (Google Gemini / AI Studio / Antigravity)
+  # ========================================================
+  - DOMAIN,generativelanguage.googleapis.com,✨ Gemini     # Gemini API 核心调用端点
+  - DOMAIN,aistudio.google.com,✨ Gemini                   # Google AI Studio 网页端
+  - DOMAIN,makersuite.google.com,✨ Gemini                 # MakerSuite
+  - DOMAIN,alkalicore-pa.clients6.google.com,✨ Gemini     # Gemini 内部核心通道
+  - DOMAIN,alkalimakersuite-pa.clients6.google.com,✨ Gemini
+  - DOMAIN,webchannel-alkalimakersuite-pa.clients6.google.com,✨ Gemini
+  - DOMAIN,cloudaicompanion.googleapis.com,✨ Gemini       # Cloud AI Companion
+  - DOMAIN,cloudcode-pa.googleapis.com,✨ Gemini           # Cloud Code 插件
+  - DOMAIN,daily-cloudcode-pa.googleapis.com,✨ Gemini
+  - DOMAIN,notebooklm-pa.googleapis.com,✨ Gemini          # NotebookLM API
+  - DOMAIN,notebooklm.googleapis.com,✨ Gemini
+  - DOMAIN,antigravity-pa.googleapis.com,✨ Gemini         # Antigravity 核心端点
+  - DOMAIN,antigravity.googleapis.com,✨ Gemini
+  - DOMAIN,antigravity-unleash.goog,✨ Gemini              # Antigravity Unleash 特性网关
+  - DOMAIN,geller-pa.googleapis.com,✨ Gemini              # Google AI 交互协议
+  - DOMAIN,proactivebackend-pa.googleapis.com,✨ Gemini
+  - DOMAIN,aicode.googleapis.com,✨ Gemini                 # Google AI Code 辅助端点
+  - DOMAIN,aisandbox-pa.googleapis.com,✨ Gemini
+  - DOMAIN,aida.googleapis.com,✨ Gemini                   # AIDA 对话引擎
+  - DOMAIN,robinfrontend-pa.googleapis.com,✨ Gemini
+  - DOMAIN,stitch.withgoogle.com,✨ Gemini
+  - DOMAIN-SUFFIX,gemini.google.com,✨ Gemini              # Gemini 网页端
+  - DOMAIN-SUFFIX,ai.google.dev,✨ Gemini                  # Google AI 开发者门户
+  - DOMAIN-SUFFIX,gemini.gstatic.com,✨ Gemini             # Gemini 前端资源
+  - DOMAIN-SUFFIX,notebooklm.google,✨ Gemini
+  - DOMAIN-SUFFIX,notebooklm.google.com,✨ Gemini
+  - DOMAIN-SUFFIX,deepmind.google,✨ Gemini
+  - DOMAIN-SUFFIX,deepmind.com,✨ Gemini
+  - DOMAIN-SUFFIX,generativeai.google,✨ Gemini
+  - DOMAIN-SUFFIX,ai.studio,✨ Gemini
+  - DOMAIN-SUFFIX,labs.google,✨ Gemini
+  - DOMAIN-SUFFIX,labs.google.com,✨ Gemini
+  - DOMAIN-SUFFIX,jules.google,✨ Gemini
+  - DOMAIN-SUFFIX,jules.google.com,✨ Gemini
+  - DOMAIN-SUFFIX,opal.google,✨ Gemini
+  - DOMAIN-SUFFIX,flow.google,✨ Gemini
+  - GEOSITE,google-gemini,✨ Gemini
 
-  # -- Anthropic / Claude (网页端、API、Claude Code、MCP) --
-  - DOMAIN-SUFFIX,anthropic.com,🤖 AI 服务                  # Anthropic 官网与 API
-  - DOMAIN-SUFFIX,claude.ai,🤖 AI 服务                      # Claude 网页端
-  - DOMAIN-SUFFIX,claude.com,🤖 AI 服务
-  - DOMAIN-SUFFIX,clau.de,🤖 AI 服务                        # 短链
-  - DOMAIN-SUFFIX,claudemcpclient.com,🤖 AI 服务            # Claude MCP 客户端通信
-  - DOMAIN-SUFFIX,claudemcpcontent.com,🤖 AI 服务           # Claude MCP 内容端点
-  - DOMAIN-SUFFIX,claudeusercontent.com,🤖 AI 服务          # Claude 用户上传与渲染资源
-  - DOMAIN-SUFFIX,servd-anthropic-website.b-cdn.net,🤖 AI 服务
+  # ========================================================
+  # 2. 🤖 ChatGPT (OpenAI / ChatGPT / Codex / Sora)
+  # ========================================================
+  - DOMAIN-SUFFIX,chatgpt.com,🤖 ChatGPT                    # ChatGPT 网页端与 API
+  - DOMAIN-SUFFIX,openai.com,🤖 ChatGPT                     # OpenAI 官方 API 与控制台
+  - DOMAIN-SUFFIX,chat.com,🤖 ChatGPT
+  - DOMAIN-SUFFIX,sora.com,🤖 ChatGPT                       # Sora 视频生成
+  - DOMAIN-SUFFIX,oaistatic.com,🤖 ChatGPT                  # ChatGPT 前端静态资源
+  - DOMAIN-SUFFIX,oaiusercontent.com,🤖 ChatGPT              # ChatGPT 生成内容存储
+  - DOMAIN-SUFFIX,oaistatsig.com,🤖 ChatGPT
+  - DOMAIN-SUFFIX,chatgpt.livekit.cloud,🤖 ChatGPT          # ChatGPT 实时语音交互
+  - DOMAIN-SUFFIX,host.livekit.cloud,🤖 ChatGPT
+  - DOMAIN-SUFFIX,turn.livekit.cloud,🤖 ChatGPT
+  - DOMAIN-SUFFIX,openai.com.cdn.cloudflare.net,🤖 ChatGPT
+  - DOMAIN-SUFFIX,openaiapi-site.azureedge.net,🤖 ChatGPT
+  - DOMAIN-SUFFIX,production-openaicom-storage.azureedge.net,🤖 ChatGPT
+  - GEOSITE,openai,🤖 ChatGPT
 
+  # ========================================================
+  # 3. 🎭 Claude (Anthropic / Claude / Claude Code / MCP)
+  # ========================================================
+  - DOMAIN-SUFFIX,anthropic.com,🎭 Claude                  # Anthropic 官网与 API
+  - DOMAIN-SUFFIX,claude.ai,🎭 Claude                      # Claude 网页端
+  - DOMAIN-SUFFIX,claude.com,🎭 Claude
+  - DOMAIN-SUFFIX,clau.de,🎭 Claude                        # 短链
+  - DOMAIN-SUFFIX,claudemcpclient.com,🎭 Claude            # Claude MCP 客户端通信
+  - DOMAIN-SUFFIX,claudemcpcontent.com,🎭 Claude           # Claude MCP 内容端点
+  - DOMAIN-SUFFIX,claudeusercontent.com,🎭 Claude          # Claude 用户上传与渲染资源
+  - DOMAIN-SUFFIX,servd-anthropic-website.b-cdn.net,🎭 Claude
+  - GEOSITE,anthropic,🎭 Claude
+
+  # ========================================================
+  # 4. 🤖 其他 AI 服务 (Grok / Cursor / Copilot / 开源聚合)
+  # ========================================================
   # -- xAI / Grok --
-  - DOMAIN-SUFFIX,x.ai,🤖 AI 服务                           # xAI 官网与 API
-  - DOMAIN-SUFFIX,grok.com,🤖 AI 服务                       # Grok 独立网页端
-  - DOMAIN-SUFFIX,grokipedia.com,🤖 AI 服务
-  - DOMAIN-SUFFIX,grok.x.com,🤖 AI 服务                     # X(Twitter) 集成端点
+  - DOMAIN-SUFFIX,x.ai,🤖 其他 AI 服务                           # xAI 官网与 API
+  - DOMAIN-SUFFIX,grok.com,🤖 其他 AI 服务                       # Grok 独立网页端
+  - DOMAIN-SUFFIX,grokipedia.com,🤖 其他 AI 服务
+  - DOMAIN-SUFFIX,grok.x.com,🤖 其他 AI 服务                     # X(Twitter) 集成端点
+  - GEOSITE,xai,🤖 其他 AI 服务
 
   # -- 本地编码 AI / IDE 扩展 (Cursor, Windsurf, Copilot, JetBrains AI 等) --
-  - DOMAIN-SUFFIX,cursor.com,🤖 AI 服务                     # Cursor 官网与鉴权
-  - DOMAIN-SUFFIX,cursor.sh,🤖 AI 服务                      # Cursor 核心请求与后台通信
-  - DOMAIN-SUFFIX,cursorapi.com,🤖 AI 服务                  # Cursor 模型补全 API
-  - DOMAIN-SUFFIX,cursor-cdn.com,🤖 AI 服务
-  - DOMAIN-SUFFIX,windsurf.build,🤖 AI 服务                 # Windsurf IDE 端点
-  - DOMAIN-SUFFIX,windsurf.com,🤖 AI 服务
-  - DOMAIN-SUFFIX,codeium.com,🤖 AI 服务                    # Codeium
-  - DOMAIN-SUFFIX,codeiumdata.com,🤖 AI 服务
-  - DOMAIN-SUFFIX,githubcopilot.com,🤖 AI 服务              # GitHub Copilot 独立端点
-  - DOMAIN,copilot-proxy.githubusercontent.com,🤖 AI 服务   # Copilot 代理通信
-  - DOMAIN,copilot-workspace.githubnext.com,🤖 AI 服务
-  - DOMAIN,copilotprodattachments.blob.core.windows.net,🤖 AI 服务
-  - DOMAIN,copilot-telemetry-service.githubusercontent.com,🤖 AI 服务
-  - DOMAIN,copilot-telemetry.githubusercontent.com,🤖 AI 服务
+  - DOMAIN-SUFFIX,cursor.com,🤖 其他 AI 服务                     # Cursor 官网与鉴权
+  - DOMAIN-SUFFIX,cursor.sh,🤖 其他 AI 服务                      # Cursor 核心请求与后台通信
+  - DOMAIN-SUFFIX,cursorapi.com,🤖 其他 AI 服务                  # Cursor 模型补全 API
+  - DOMAIN-SUFFIX,cursor-cdn.com,🤖 其他 AI 服务
+  - DOMAIN-SUFFIX,windsurf.build,🤖 其他 AI 服务                 # Windsurf IDE 端点
+  - DOMAIN-SUFFIX,windsurf.com,🤖 其他 AI 服务
+  - DOMAIN-SUFFIX,codeium.com,🤖 其他 AI 服务                    # Codeium
+  - DOMAIN-SUFFIX,codeiumdata.com,🤖 其他 AI 服务
+  - DOMAIN-SUFFIX,githubcopilot.com,🤖 其他 AI 服务              # GitHub Copilot 独立端点
+  - DOMAIN,copilot-proxy.githubusercontent.com,🤖 其他 AI 服务   # Copilot 代理通信
+  - DOMAIN,copilot-workspace.githubnext.com,🤖 其他 AI 服务
+  - DOMAIN,copilotprodattachments.blob.core.windows.net,🤖 其他 AI 服务
+  - DOMAIN,copilot-telemetry-service.githubusercontent.com,🤖 其他 AI 服务
+  - DOMAIN,copilot-telemetry.githubusercontent.com,🤖 其他 AI 服务
+  - GEOSITE,github-copilot,🤖 其他 AI 服务
+  - GEOSITE,jetbrains-ai,🤖 其他 AI 服务
 
   # -- 知名海外模型聚合与开源端点 (Perplexity, Groq, Mistral, HuggingFace 等) --
-  - DOMAIN-SUFFIX,perplexity.ai,🤖 AI 服务                  # Perplexity 搜索与 API
-  - DOMAIN-SUFFIX,pplx.ai,🤖 AI 服务
-  - DOMAIN-SUFFIX,groq.com,🤖 AI 服务                       # Groq 极速推理
-  - DOMAIN-SUFFIX,mistral.ai,🤖 AI 服务                    # Mistral AI
-  - DOMAIN-SUFFIX,cohere.com,🤖 AI 服务                     # Cohere
-  - DOMAIN-SUFFIX,cohere.ai,🤖 AI 服务
-  - DOMAIN-SUFFIX,openrouter.ai,🤖 AI 服务                  # OpenRouter API 网关
-  - DOMAIN-SUFFIX,huggingface.co,🤖 AI 服务                 # HuggingFace 模型空间
-  - DOMAIN-SUFFIX,hf.space,🤖 AI 服务
-  - DOMAIN-SUFFIX,hf.co,🤖 AI 服务
+  - DOMAIN-SUFFIX,perplexity.ai,🤖 其他 AI 服务                  # Perplexity 搜索与 API
+  - DOMAIN-SUFFIX,pplx.ai,🤖 其他 AI 服务
+  - DOMAIN-SUFFIX,groq.com,🤖 其他 AI 服务                       # Groq 极速推理
+  - DOMAIN-SUFFIX,mistral.ai,🤖 其他 AI 服务                    # Mistral AI
+  - DOMAIN-SUFFIX,cohere.com,🤖 其他 AI 服务                     # Cohere
+  - DOMAIN-SUFFIX,cohere.ai,🤖 其他 AI 服务
+  - DOMAIN-SUFFIX,openrouter.ai,🤖 其他 AI 服务                  # OpenRouter API 网关
+  - DOMAIN-SUFFIX,huggingface.co,🤖 其他 AI 服务                 # HuggingFace 模型空间
+  - DOMAIN-SUFFIX,hf.space,🤖 其他 AI 服务
+  - DOMAIN-SUFFIX,hf.co,🤖 其他 AI 服务
+  - GEOSITE,perplexity,🤖 其他 AI 服务
+  - GEOSITE,groq,🤖 其他 AI 服务
 
-  # -- MetaCubeX geosite 数据库 AI 类目规则兜底匹配 --
-  - GEOSITE,category-ai-!cn,🤖 AI 服务                     # 匹配 meta-rules-dat 中所有海外 AI 服务
-  - GEOSITE,openai,🤖 AI 服务
-  - GEOSITE,anthropic,🤖 AI 服务
-  - GEOSITE,google-gemini,🤖 AI 服务
-  - GEOSITE,xai,🤖 AI 服务
-  - GEOSITE,github-copilot,🤖 AI 服务
-  - GEOSITE,perplexity,🤖 AI 服务
-  - GEOSITE,groq,🤖 AI 服务
-  - GEOSITE,jetbrains-ai,🤖 AI 服务
+  # -- MetaCubeX geosite 数据库海外 AI 类目兜底匹配 --
+  - GEOSITE,category-ai-!cn,🤖 其他 AI 服务                     # 匹配 meta-rules-dat 中所有海外 AI 服务
 
   # --------------------------------------------------------
   # 第六层级：🚀 内容分发 (海外大流量下载 / 流式传输 / 纯海外 CDN)
@@ -518,7 +529,76 @@ proxy-groups:
       - 🇩🇪 德国节点 URLTest
       - DIRECT
 
-  - name: 🤖 AI 服务
+  - name: 🤖 ChatGPT
+    type: select
+    proxies:
+      - 🌈 节点选择
+      - 🚆 ISP 优化
+      - 🚀 CN 优化
+      - 🏗️ 自建
+      - 🏡 二级代理
+      - ✈️ 机场
+      - 🇭🇰 香港节点
+      - 🇭🇰 香港节点 URLTest
+      - 🇹🇼 台湾节点
+      - 🇹🇼 台湾节点 URLTest
+      - 🇯🇵 日本节点
+      - 🇯🇵 日本节点 URLTest
+      - 🇺🇸 美国节点
+      - 🇺🇸 美国节点 URLTest
+      - 🇸🇬 新加坡节点
+      - 🇸🇬 新加坡节点 URLTest
+      - 🇩🇪 德国节点
+      - 🇩🇪 德国节点 URLTest
+      - DIRECT
+
+  - name: ✨ Gemini
+    type: select
+    proxies:
+      - 🌈 节点选择
+      - 🚆 ISP 优化
+      - 🚀 CN 优化
+      - 🏗️ 自建
+      - 🏡 二级代理
+      - ✈️ 机场
+      - 🇭🇰 香港节点
+      - 🇭🇰 香港节点 URLTest
+      - 🇹🇼 台湾节点
+      - 🇹🇼 台湾节点 URLTest
+      - 🇯🇵 日本节点
+      - 🇯🇵 日本节点 URLTest
+      - 🇺🇸 美国节点
+      - 🇺🇸 美国节点 URLTest
+      - 🇸🇬 新加坡节点
+      - 🇸🇬 新加坡节点 URLTest
+      - 🇩🇪 德国节点
+      - 🇩🇪 德国节点 URLTest
+      - DIRECT
+
+  - name: 🎭 Claude
+    type: select
+    proxies:
+      - 🌈 节点选择
+      - 🚆 ISP 优化
+      - 🚀 CN 优化
+      - 🏗️ 自建
+      - 🏡 二级代理
+      - ✈️ 机场
+      - 🇭🇰 香港节点
+      - 🇭🇰 香港节点 URLTest
+      - 🇹🇼 台湾节点
+      - 🇹🇼 台湾节点 URLTest
+      - 🇯🇵 日本节点
+      - 🇯🇵 日本节点 URLTest
+      - 🇺🇸 美国节点
+      - 🇺🇸 美国节点 URLTest
+      - 🇸🇬 新加坡节点
+      - 🇸🇬 新加坡节点 URLTest
+      - 🇩🇪 德国节点
+      - 🇩🇪 德国节点 URLTest
+      - DIRECT
+
+  - name: 🤖 其他 AI 服务
     type: select
     proxies:
       - 🌈 节点选择
